@@ -33,29 +33,26 @@ async def main() -> None:
     # Register database tools if configured
     if config.validate_database_config():
         logger.info("Initializing Qdrant Database API tools")
-        async with QdrantDatabaseClient(
+        db_client = QdrantDatabaseClient(
             base_url=config.url,  # type: ignore
             api_key=config.api_key,  # type: ignore
-        ) as db_client:
-            register_collection_tools(server, db_client)
-            register_point_tools(server, db_client)
-            register_search_tools(server, db_client)
-            register_payload_tools(server, db_client)
-            register_health_tools(server, db_client)
-            register_vector_tools(server, db_client)
-            register_index_tools(server, db_client)
-            logger.info("Registered 30 database tools (Phase 1 complete)")
+        )
 
-            # Run server
-            async with stdio_server() as (read_stream, write_stream):
-                await server.run(read_stream, write_stream, server.create_initialization_options())
+        register_collection_tools(server, db_client)
+        register_point_tools(server, db_client)
+        register_search_tools(server, db_client)
+        register_payload_tools(server, db_client)
+        register_health_tools(server, db_client)
+        register_vector_tools(server, db_client)
+        register_index_tools(server, db_client)
+        logger.info("Registered 30 database tools (Phase 1 complete)")
     else:
         logger.warning("Database API not configured. Set QDRANT_URL and QDRANT_API_KEY")
         logger.info("Running with no tools registered")
 
-        # Run server anyway (for testing/debugging)
-        async with stdio_server() as (read_stream, write_stream):
-            await server.run(read_stream, write_stream, server.create_initialization_options())
+    # Run server
+    async with stdio_server() as (read_stream, write_stream):
+        await server.run(read_stream, write_stream, server.create_initialization_options())
 
 
 def serve() -> None:
