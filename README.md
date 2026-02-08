@@ -17,11 +17,9 @@
 
 ## Infrastructure Fabric
 
-<div align="center">
-  <img src="assets/infrastructure-fabric-static.svg" alt="Infrastructure as a Fabric Architecture" width="100%"/>
-  <br/>
-  <em>Complete ecosystem showing local Qdrant, MCP server, cloud management, and fabric integrations</em>
-</div>
+<p align="center">
+  <img src="assets/qdrant-fabric-flow.svg" alt="qdrant-fabric Data Flow" width="100%">
+</p>
 
 The qdrant-fabric MCP server sits at the heart of the infrastructure, connecting:
 - **Local Qdrant** (localhost:6333) - Your development instance with collections
