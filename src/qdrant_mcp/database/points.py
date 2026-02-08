@@ -136,7 +136,99 @@ def register_point_tools(server: Server, client: QdrantDatabaseClient, tools_lis
     Args:
         server: MCP server instance
         client: Qdrant database client
+        tools_list: List to append tool definitions to
     """
+    from mcp.types import Tool
+
+    # Define tools
+    tools_list.extend([
+        Tool(
+            name="qdrant_db_points_upsert",
+            description="Upsert (insert or update) points in a collection",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "points": {"type": "array", "items": {"type": "object"}},
+                },
+                "required": ["collection_name", "points"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_get",
+            description="Retrieve multiple points by their IDs",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "ids": {"type": "array"},
+                },
+                "required": ["collection_name", "ids"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_get_single",
+            description="Retrieve a single point by ID",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "point_id": {"type": ["string", "integer"]},
+                },
+                "required": ["collection_name", "point_id"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_delete",
+            description="Delete points from a collection",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "points": {"type": "array"},
+                },
+                "required": ["collection_name", "points"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_count",
+            description="Count points in a collection with optional filter",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "filter": {"type": "object"},
+                },
+                "required": ["collection_name"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_scroll",
+            description="Scroll through points in a collection",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "limit": {"type": "integer", "default": 10},
+                    "offset": {"type": ["string", "integer", "null"]},
+                    "filter": {"type": "object"},
+                },
+                "required": ["collection_name"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_batch",
+            description="Perform multiple point operations in a single request",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "operations": {"type": "array", "items": {"type": "object"}},
+                },
+                "required": ["collection_name", "operations"],
+            },
+        ),
+    ])
 
     @server.call_tool()
     async def qdrant_db_points_upsert(arguments: dict[str, Any]) -> list[dict[str, Any]]:

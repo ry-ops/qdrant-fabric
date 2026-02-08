@@ -54,7 +54,38 @@ def register_vector_tools(server: Server, client: QdrantDatabaseClient, tools_li
     Args:
         server: MCP server instance
         client: Qdrant database client
+        tools_list: List to append tool definitions to
     """
+    from mcp.types import Tool
+
+    # Define tools
+    tools_list.extend([
+        Tool(
+            name="qdrant_db_vectors_update",
+            description="Update vectors for existing points",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "points": {"type": "array", "items": {"type": "object"}},
+                },
+                "required": ["collection_name", "points"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_vectors_delete",
+            description="Delete specific named vectors from points",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "vector_names": {"type": "array", "items": {"type": "string"}},
+                    "points": {"type": "array"},
+                },
+                "required": ["collection_name", "vector_names", "points"],
+            },
+        ),
+    ])
 
     @server.call_tool()
     async def qdrant_db_vectors_update(arguments: dict[str, Any]) -> list[dict[str, Any]]:

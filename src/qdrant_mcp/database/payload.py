@@ -96,7 +96,64 @@ def register_payload_tools(server: Server, client: QdrantDatabaseClient, tools_l
     Args:
         server: MCP server instance
         client: Qdrant database client
+        tools_list: List to append tool definitions to
     """
+    from mcp.types import Tool
+
+    # Define tools
+    tools_list.extend([
+        Tool(
+            name="qdrant_db_payload_set",
+            description="Set payload for specified points (merges with existing)",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "payload": {"type": "object"},
+                    "points": {"type": "array"},
+                },
+                "required": ["collection_name", "payload", "points"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_payload_overwrite",
+            description="Overwrite payload for specified points (replaces existing)",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "payload": {"type": "object"},
+                    "points": {"type": "array"},
+                },
+                "required": ["collection_name", "payload", "points"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_payload_delete",
+            description="Delete specific payload fields from points",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "keys": {"type": "array", "items": {"type": "string"}},
+                    "points": {"type": "array"},
+                },
+                "required": ["collection_name", "keys", "points"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_payload_clear",
+            description="Clear all payload from specified points",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "points": {"type": "array"},
+                },
+                "required": ["collection_name", "points"],
+            },
+        ),
+    ])
 
     @server.call_tool()
     async def qdrant_db_payload_set(arguments: dict[str, Any]) -> list[dict[str, Any]]:

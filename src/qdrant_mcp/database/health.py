@@ -66,7 +66,38 @@ def register_health_tools(server: Server, client: QdrantDatabaseClient, tools_li
     Args:
         server: MCP server instance
         client: Qdrant database client
+        tools_list: List to append tool definitions to
     """
+    from mcp.types import Tool
+
+    # Define tools
+    tools_list.extend([
+        Tool(
+            name="qdrant_db_health_root",
+            description="Get Qdrant version and build information",
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="qdrant_db_health_check",
+            description="Perform health check on Qdrant database",
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="qdrant_db_health_liveness",
+            description="Check if Qdrant is alive",
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="qdrant_db_health_readiness",
+            description="Check if Qdrant is ready to serve requests",
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="qdrant_db_health_metrics",
+            description="Get Prometheus metrics from Qdrant",
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+    ])
 
     @server.call_tool()
     async def qdrant_db_health_root(arguments: dict[str, Any]) -> list[dict[str, Any]]:

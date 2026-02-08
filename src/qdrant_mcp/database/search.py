@@ -108,7 +108,68 @@ def register_search_tools(server: Server, client: QdrantDatabaseClient, tools_li
     Args:
         server: MCP server instance
         client: Qdrant database client
+        tools_list: List to append tool definitions to
     """
+    from mcp.types import Tool
+
+    # Define tools
+    tools_list.extend([
+        Tool(
+            name="qdrant_db_points_search",
+            description="Search for similar vectors in a collection",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "vector": {"type": "array", "items": {"type": "number"}},
+                    "limit": {"type": "integer", "default": 10},
+                    "filter": {"type": "object"},
+                    "with_payload": {"type": "boolean", "default": True},
+                    "with_vector": {"type": "boolean", "default": False},
+                },
+                "required": ["collection_name", "vector"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_search_batch",
+            description="Perform multiple search queries in a single request",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "searches": {"type": "array", "items": {"type": "object"}},
+                },
+                "required": ["collection_name", "searches"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_recommend",
+            description="Recommend points based on positive and negative examples",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "positive": {"type": "array"},
+                    "negative": {"type": "array"},
+                    "limit": {"type": "integer", "default": 10},
+                    "filter": {"type": "object"},
+                },
+                "required": ["collection_name", "positive"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_points_recommend_batch",
+            description="Perform multiple recommendation queries in a single request",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "searches": {"type": "array", "items": {"type": "object"}},
+                },
+                "required": ["collection_name", "searches"],
+            },
+        ),
+    ])
 
     @server.call_tool()
     async def qdrant_db_points_search(arguments: dict[str, Any]) -> list[dict[str, Any]]:

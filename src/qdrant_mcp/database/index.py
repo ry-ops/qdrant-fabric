@@ -50,7 +50,38 @@ def register_index_tools(server: Server, client: QdrantDatabaseClient, tools_lis
     Args:
         server: MCP server instance
         client: Qdrant database client
+        tools_list: List to append tool definitions to
     """
+    from mcp.types import Tool
+
+    # Define tools
+    tools_list.extend([
+        Tool(
+            name="qdrant_db_index_create",
+            description="Create an index for a payload field to speed up filtering",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "field_name": {"type": "string"},
+                    "field_schema": {"type": "object"},
+                },
+                "required": ["collection_name", "field_name"],
+            },
+        ),
+        Tool(
+            name="qdrant_db_index_delete",
+            description="Delete an index for a payload field",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "collection_name": {"type": "string"},
+                    "field_name": {"type": "string"},
+                },
+                "required": ["collection_name", "field_name"],
+            },
+        ),
+    ])
 
     @server.call_tool()
     async def qdrant_db_index_create(arguments: dict[str, Any]) -> list[dict[str, Any]]:
