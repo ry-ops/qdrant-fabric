@@ -1,230 +1,233 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500">
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Green gradients for depth -->
-    <linearGradient id="green1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#064e3b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#065f46;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="green2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#047857;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="green3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#34d399;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="green4" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6ee7b7;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#a7f3d0;stop-opacity:1" />
+    <!-- Background gradient - dark theme like blog -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e27;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1f3a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d1b2a;stop-opacity:1" />
     </linearGradient>
 
-    <!-- Shadow for depth -->
-    <filter id="shadow">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-      <feOffset dx="0" dy="3" result="offsetblur"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.4"/>
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <!-- Qdrant brand colors gradient (red to dark red) -->
+    <linearGradient id="qdrantGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC244C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B1538;stop-opacity:1" />
+    </linearGradient>
 
-    <filter id="lightShadow">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-      <feOffset dx="0" dy="2" result="offsetblur"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.3"/>
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <!-- Vector/MCP accent gradient -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Central glow -->
+    <radialGradient id="glowGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#DC244C;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#DC244C;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Vector dot pattern glow -->
+    <radialGradient id="vectorGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0" />
+    </radialGradient>
   </defs>
 
-  <!-- Dark green background -->
-  <rect width="1200" height="500" fill="#022c22"/>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
 
-  <!-- Layer 8 - Deepest (darkest green) -->
-  <path fill="url(#green1)" filter="url(#shadow)" opacity="0.9">
-    <animate attributeName="d"
-      values="
-        M 0,450 C 150,430 300,470 450,450 C 600,430 750,470 900,450 C 1050,430 1200,450 1200,450 L 1200,500 L 0,500 Z;
-        M 0,455 C 150,435 300,475 450,455 C 600,435 750,475 900,455 C 1050,435 1200,455 1200,455 L 1200,500 L 0,500 Z;
-        M 0,450 C 150,430 300,470 450,450 C 600,430 750,470 900,450 C 1050,430 1200,450 1200,450 L 1200,500 L 0,500 Z"
-      dur="12s" repeatCount="indefinite"/>
-  </path>
-
-  <!-- Layer 7 -->
-  <path fill="url(#green1)" filter="url(#shadow)" opacity="0.95">
-    <animate attributeName="d"
-      values="
-        M 0,410 C 140,385 280,425 420,405 C 560,385 700,425 840,405 C 980,385 1120,405 1200,400 L 1200,500 L 0,500 Z;
-        M 0,415 C 140,390 280,430 420,410 C 560,390 700,430 840,410 C 980,390 1120,410 1200,405 L 1200,500 L 0,500 Z;
-        M 0,410 C 140,385 280,425 420,405 C 560,385 700,425 840,405 C 980,385 1120,405 1200,400 L 1200,500 L 0,500 Z"
-      dur="11s" repeatCount="indefinite"/>
-  </path>
-
-  <!-- Layer 6 -->
-  <path fill="url(#green2)" filter="url(#shadow)">
-    <animate attributeName="d"
-      values="
-        M 0,360 C 130,330 260,380 390,355 C 520,330 650,380 780,355 C 910,330 1040,355 1200,345 L 1200,500 L 0,500 Z;
-        M 0,365 C 130,335 260,385 390,360 C 520,335 650,385 780,360 C 910,335 1040,360 1200,350 L 1200,500 L 0,500 Z;
-        M 0,360 C 130,330 260,380 390,355 C 520,330 650,380 780,355 C 910,330 1040,355 1200,345 L 1200,500 L 0,500 Z"
-      dur="10s" repeatCount="indefinite"/>
-  </path>
-
-  <!-- Contour lines on layer 6 -->
-  <g opacity="0.3" stroke="#065f46" stroke-width="2" fill="none">
-    <path d="M 0,355 C 130,325 260,375 390,350 C 520,325 650,375 780,350 C 910,325 1040,350 1200,340">
-      <animate attributeName="d"
-        values="M 0,355 C 130,325 260,375 390,350 C 520,325 650,375 780,350 C 910,325 1040,350 1200,340;
-                M 0,360 C 130,330 260,380 390,355 C 520,330 650,380 780,355 C 910,330 1040,355 1200,345;
-                M 0,355 C 130,325 260,375 390,350 C 520,325 650,375 780,350 C 910,325 1040,350 1200,340"
-        dur="10s" repeatCount="indefinite"/>
-    </path>
+  <!-- Circuit/connection pattern (subtle) -->
+  <g opacity="0.08" stroke="#DC244C" stroke-width="1">
+    <line x1="200" y1="200" x2="400" y2="200"/>
+    <line x1="400" y1="200" x2="400" y2="400"/>
+    <line x1="800" y1="100" x2="1000" y2="100"/>
+    <line x1="1000" y1="100" x2="1000" y2="300"/>
+    <circle cx="400" cy="200" r="4" fill="#DC244C"/>
+    <circle cx="1000" cy="300" r="4" fill="#DC244C"/>
   </g>
 
-  <!-- Layer 5 -->
-  <path fill="url(#green2)" filter="url(#shadow)">
-    <animate attributeName="d"
-      values="
-        M 0,300 C 120,265 240,315 360,285 C 480,255 600,305 720,275 C 840,245 960,275 1200,260 L 1200,500 L 0,500 Z;
-        M 0,305 C 120,270 240,320 360,290 C 480,260 600,310 720,280 C 840,250 960,280 1200,265 L 1200,500 L 0,500 Z;
-        M 0,300 C 120,265 240,315 360,285 C 480,255 600,305 720,275 C 840,245 960,275 1200,260 L 1200,500 L 0,500 Z"
-      dur="9s" repeatCount="indefinite"/>
-  </path>
+  <!-- Central glow effect -->
+  <circle cx="600" cy="315" r="350" fill="url(#glowGradient)" opacity="0.3">
+    <animate attributeName="opacity" values="0.3;0.5;0.3" dur="4s" repeatCount="indefinite"/>
+  </circle>
 
-  <!-- Contour lines on layer 5 -->
-  <g opacity="0.4" stroke="#059669" stroke-width="2.5" fill="none">
-    <path d="M 0,295 C 120,260 240,310 360,280 C 480,250 600,300 720,270 C 840,240 960,270 1200,255">
-      <animate attributeName="d"
-        values="M 0,295 C 120,260 240,310 360,280 C 480,250 600,300 720,270 C 840,240 960,270 1200,255;
-                M 0,300 C 120,265 240,315 360,285 C 480,255 600,305 720,275 C 840,245 960,275 1200,260;
-                M 0,295 C 120,260 240,310 360,280 C 480,250 600,300 720,270 C 840,240 960,270 1200,255"
-        dur="9s" repeatCount="indefinite"/>
+  <!-- Central rotating octagon (Qdrant logo inspired) -->
+  <g transform="translate(600, 315)">
+    <path d="M 0,-180 L 127,-127 L 180,0 L 127,127 L 0,180 L -127,127 L -180,0 L -127,-127 Z"
+          fill="none" stroke="url(#qdrantGradient)" stroke-width="4" opacity="0.9">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/>
     </path>
-    <path d="M 0,280 C 120,245 240,295 360,265 C 480,235 600,285 720,255 C 840,225 960,255 1200,240">
-      <animate attributeName="d"
-        values="M 0,280 C 120,245 240,295 360,265 C 480,235 600,285 720,255 C 840,225 960,255 1200,240;
-                M 0,285 C 120,250 240,300 360,270 C 480,240 600,290 720,260 C 840,230 960,260 1200,245;
-                M 0,280 C 120,245 240,295 360,265 C 480,235 600,285 720,255 C 840,225 960,255 1200,240"
-        dur="9s" repeatCount="indefinite"/>
+
+    <!-- Inner rotating octagon (faster) -->
+    <path d="M 0,-120 L 85,-85 L 120,0 L 85,85 L 0,120 L -85,85 L -120,0 L -85,-85 Z"
+          fill="none" stroke="url(#accentGradient)" stroke-width="3" opacity="0.7">
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="15s" repeatCount="indefinite"/>
     </path>
+
+    <!-- Core circle representing vector database -->
+    <circle cx="0" cy="0" r="60" fill="none" stroke="#DC244C" stroke-width="3" opacity="0.8">
+      <animate attributeName="r" values="60;65;60" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Inner core -->
+    <circle cx="0" cy="0" r="40" fill="rgba(220,36,76,0.2)" stroke="#DC244C" stroke-width="2" opacity="0.9"/>
   </g>
 
-  <!-- Layer 4 -->
-  <path fill="url(#green3)" filter="url(#shadow)">
-    <animate attributeName="d"
-      values="
-        M 0,230 C 110,190 220,250 330,210 C 440,170 550,230 660,190 C 770,150 880,190 1200,165 L 1200,500 L 0,500 Z;
-        M 0,235 C 110,195 220,255 330,215 C 440,175 550,235 660,195 C 770,155 880,195 1200,170 L 1200,500 L 0,500 Z;
-        M 0,230 C 110,190 220,250 330,210 C 440,170 550,230 660,190 C 770,150 880,190 1200,165 L 1200,500 L 0,500 Z"
-      dur="8s" repeatCount="indefinite"/>
-  </path>
+  <!-- Vector points constellation (representing vector embeddings) -->
+  <g>
+    <!-- Cluster 1 - Top left -->
+    <circle cx="200" cy="150" r="4" fill="#6366f1" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="180" cy="180" r="3" fill="#6366f1" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.5s" begin="0.3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="220" cy="170" r="3" fill="#6366f1" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.2s" begin="0.6s" repeatCount="indefinite"/>
+    </circle>
+    <line x1="200" y1="150" x2="180" y2="180" stroke="#6366f1" stroke-width="1" opacity="0.3"/>
+    <line x1="200" y1="150" x2="220" y2="170" stroke="#6366f1" stroke-width="1" opacity="0.3"/>
 
-  <!-- Contour lines on layer 4 -->
-  <g opacity="0.5" stroke="#34d399" stroke-width="3" fill="none">
-    <path d="M 0,225 C 110,185 220,245 330,205 C 440,165 550,225 660,185 C 770,145 880,185 1200,160">
-      <animate attributeName="d"
-        values="M 0,225 C 110,185 220,245 330,205 C 440,165 550,225 660,185 C 770,145 880,185 1200,160;
-                M 0,230 C 110,190 220,250 330,210 C 440,170 550,230 660,190 C 770,150 880,190 1200,165;
-                M 0,225 C 110,185 220,245 330,205 C 440,165 550,225 660,185 C 770,145 880,185 1200,160"
-        dur="8s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,205 C 110,165 220,225 330,185 C 440,145 550,205 660,165 C 770,125 880,165 1200,140">
-      <animate attributeName="d"
-        values="M 0,205 C 110,165 220,225 330,185 C 440,145 550,205 660,165 C 770,125 880,165 1200,140;
-                M 0,210 C 110,170 220,230 330,190 C 440,150 550,210 660,170 C 770,130 880,170 1200,145;
-                M 0,205 C 110,165 220,225 330,185 C 440,145 550,205 660,165 C 770,125 880,165 1200,140"
-        dur="8s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,185 C 110,145 220,205 330,165 C 440,125 550,185 660,145 C 770,105 880,145 1200,120">
-      <animate attributeName="d"
-        values="M 0,185 C 110,145 220,205 330,165 C 440,125 550,185 660,145 C 770,105 880,145 1200,120;
-                M 0,190 C 110,150 220,210 330,170 C 440,130 550,190 660,150 C 770,110 880,150 1200,125;
-                M 0,185 C 110,145 220,205 330,165 C 440,125 550,185 660,145 C 770,105 880,145 1200,120"
-        dur="8s" repeatCount="indefinite"/>
-    </path>
+    <!-- Cluster 2 - Top right -->
+    <circle cx="1000" cy="180" r="4" fill="#8b5cf6" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="2.3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="980" cy="210" r="3" fill="#8b5cf6" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.6s" begin="0.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1020" cy="200" r="3" fill="#8b5cf6" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.1s" begin="0.8s" repeatCount="indefinite"/>
+    </circle>
+    <line x1="1000" y1="180" x2="980" y2="210" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+    <line x1="1000" y1="180" x2="1020" y2="200" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+
+    <!-- Cluster 3 - Bottom left -->
+    <circle cx="220" cy="480" r="4" fill="#6366f1" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="510" r="3" fill="#6366f1" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.7s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="240" cy="500" r="3" fill="#6366f1" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.3s" begin="0.9s" repeatCount="indefinite"/>
+    </circle>
+    <line x1="220" y1="480" x2="200" y2="510" stroke="#6366f1" stroke-width="1" opacity="0.3"/>
+    <line x1="220" y1="480" x2="240" y2="500" stroke="#6366f1" stroke-width="1" opacity="0.3"/>
+
+    <!-- Cluster 4 - Bottom right -->
+    <circle cx="980" cy="470" r="4" fill="#8b5cf6" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="2.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="960" cy="500" r="3" fill="#8b5cf6" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.8s" begin="0.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1000" cy="490" r="3" fill="#8b5cf6" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.4s" begin="0.7s" repeatCount="indefinite"/>
+    </circle>
+    <line x1="980" y1="470" x2="960" y2="500" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+    <line x1="980" y1="470" x2="1000" y2="490" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
   </g>
 
-  <!-- Layer 3 -->
-  <path fill="url(#green3)" filter="url(#lightShadow)">
-    <animate attributeName="d"
-      values="
-        M 0,150 C 100,105 200,165 300,120 C 400,75 500,135 600,90 C 700,45 800,90 1200,60 L 1200,500 L 0,500 Z;
-        M 0,155 C 100,110 200,170 300,125 C 400,80 500,140 600,95 C 700,50 800,95 1200,65 L 1200,500 L 0,500 Z;
-        M 0,150 C 100,105 200,165 300,120 C 400,75 500,135 600,90 C 700,45 800,90 1200,60 L 1200,500 L 0,500 Z"
-      dur="7s" repeatCount="indefinite"/>
-  </path>
-
-  <!-- Contour lines on layer 3 -->
-  <g opacity="0.6" stroke="#6ee7b7" stroke-width="3" fill="none">
-    <path d="M 0,145 C 100,100 200,160 300,115 C 400,70 500,130 600,85 C 700,40 800,85 1200,55">
-      <animate attributeName="d"
-        values="M 0,145 C 100,100 200,160 300,115 C 400,70 500,130 600,85 C 700,40 800,85 1200,55;
-                M 0,150 C 100,105 200,165 300,120 C 400,75 500,135 600,90 C 700,45 800,90 1200,60;
-                M 0,145 C 100,100 200,160 300,115 C 400,70 500,130 600,85 C 700,40 800,85 1200,55"
-        dur="7s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,120 C 100,75 200,135 300,90 C 400,45 500,105 600,60 C 700,15 800,60 1200,30">
-      <animate attributeName="d"
-        values="M 0,120 C 100,75 200,135 300,90 C 400,45 500,105 600,60 C 700,15 800,60 1200,30;
-                M 0,125 C 100,80 200,140 300,95 C 400,50 500,110 600,65 C 700,20 800,65 1200,35;
-                M 0,120 C 100,75 200,135 300,90 C 400,45 500,105 600,60 C 700,15 800,60 1200,30"
-        dur="7s" repeatCount="indefinite"/>
-    </path>
+  <!-- Animated particles representing vector operations -->
+  <g>
+    <circle cx="350" cy="315" r="3" fill="#DC244C">
+      <animateTransform attributeName="transform" type="translate"
+        values="0,0; 250,0; 250,0" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="850" cy="315" r="3" fill="#DC244C">
+      <animateTransform attributeName="transform" type="translate"
+        values="0,0; -250,0; -250,0" dur="4s" begin="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0" dur="4s" begin="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="600" cy="115" r="3" fill="#6366f1">
+      <animateTransform attributeName="transform" type="translate"
+        values="0,0; 0,200; 0,200" dur="5s" begin="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0" dur="5s" begin="1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="600" cy="515" r="3" fill="#8b5cf6">
+      <animateTransform attributeName="transform" type="translate"
+        values="0,0; 0,-200; 0,-200" dur="5s" begin="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;0" dur="5s" begin="3s" repeatCount="indefinite"/>
+    </circle>
   </g>
 
-  <!-- Layer 2 -->
-  <path fill="url(#green4)" filter="url(#lightShadow)">
-    <animate attributeName="d"
-      values="
-        M 0,80 C 90,30 180,95 270,45 C 360,-5 450,60 540,10 C 630,-40 720,10 1200,-25 L 1200,500 L 0,500 Z;
-        M 0,85 C 90,35 180,100 270,50 C 360,0 450,65 540,15 C 630,-35 720,15 1200,-20 L 1200,500 L 0,500 Z;
-        M 0,80 C 90,30 180,95 270,45 C 360,-5 450,60 540,10 C 630,-40 720,10 1200,-25 L 1200,500 L 0,500 Z"
-      dur="6s" repeatCount="indefinite"/>
-  </path>
-
-  <!-- Contour lines on layer 2 - brightest -->
-  <g opacity="0.7" stroke="#d1fae5" stroke-width="3.5" fill="none">
-    <path d="M 0,75 C 90,25 180,90 270,40 C 360,-10 450,55 540,5 C 630,-45 720,5 1200,-30">
-      <animate attributeName="d"
-        values="M 0,75 C 90,25 180,90 270,40 C 360,-10 450,55 540,5 C 630,-45 720,5 1200,-30;
-                M 0,80 C 90,30 180,95 270,45 C 360,-5 450,60 540,10 C 630,-40 720,10 1200,-25;
-                M 0,75 C 90,25 180,90 270,40 C 360,-10 450,55 540,5 C 630,-45 720,5 1200,-30"
-        dur="6s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,45 C 90,-5 180,60 270,10 C 360,-40 450,25 540,-25 C 630,-75 720,-25 1200,-60">
-      <animate attributeName="d"
-        values="M 0,45 C 90,-5 180,60 270,10 C 360,-40 450,25 540,-25 C 630,-75 720,-25 1200,-60;
-                M 0,50 C 90,0 180,65 270,15 C 360,-35 450,30 540,-20 C 630,-70 720,-20 1200,-55;
-                M 0,45 C 90,-5 180,60 270,10 C 360,-40 450,25 540,-25 C 630,-75 720,-25 1200,-60"
-        dur="6s" repeatCount="indefinite"/>
-    </path>
+  <!-- Orbital rings representing API layers -->
+  <g opacity="0.4">
+    <circle cx="600" cy="315" r="250" fill="none" stroke="#DC244C" stroke-width="1" stroke-dasharray="10,5">
+      <animateTransform attributeName="transform" type="rotate"
+        values="0 600 315; 360 600 315" dur="30s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="600" cy="315" r="280" fill="none" stroke="#6366f1" stroke-width="1" stroke-dasharray="8,8">
+      <animateTransform attributeName="transform" type="rotate"
+        values="360 600 315; 0 600 315" dur="25s" repeatCount="indefinite"/>
+    </circle>
   </g>
 
-  <!-- Layer 1 - Front, lightest -->
-  <path fill="url(#green4)" filter="url(#lightShadow)" opacity="0.95">
-    <animate attributeName="d"
-      values="
-        M 0,30 C 80,-25 160,45 240,-10 C 320,-65 400,0 480,-55 C 560,-110 640,-55 1200,-95 L 1200,500 L 0,500 Z;
-        M 0,35 C 80,-20 160,50 240,-5 C 320,-60 400,5 480,-50 C 560,-105 640,-50 1200,-90 L 1200,500 L 0,500 Z;
-        M 0,30 C 80,-25 160,45 240,-10 C 320,-65 400,0 480,-55 C 560,-110 640,-55 1200,-95 L 1200,500 L 0,500 Z"
-      dur="5s" repeatCount="indefinite"/>
-  </path>
+  <!-- Four corner API indicators (Cloud, Database, MCP, Fabric) -->
+  <g>
+    <!-- Cloud API - Top Left -->
+    <g transform="translate(100, 80)">
+      <circle cx="0" cy="0" r="35" fill="none" stroke="#DC244C" stroke-width="2" opacity="0.7"/>
+      <circle cx="0" cy="0" r="28" fill="rgba(220,36,76,0.1)"/>
+      <circle cx="0" cy="0" r="8" fill="#DC244C">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
 
-  <!-- Brightest contour on front layer -->
-  <g opacity="0.8" stroke="#ecfdf5" stroke-width="4" fill="none">
-    <path d="M 0,25 C 80,-30 160,40 240,-15 C 320,-70 400,-5 480,-60 C 560,-115 640,-60 1200,-100">
-      <animate attributeName="d"
-        values="M 0,25 C 80,-30 160,40 240,-15 C 320,-70 400,-5 480,-60 C 560,-115 640,-60 1200,-100;
-                M 0,30 C 80,-25 160,45 240,-10 C 320,-65 400,0 480,-55 C 560,-110 640,-55 1200,-95;
-                M 0,25 C 80,-30 160,40 240,-15 C 320,-70 400,-5 480,-60 C 560,-115 640,-60 1200,-100"
-        dur="5s" repeatCount="indefinite"/>
-    </path>
+    <!-- Database API - Top Right -->
+    <g transform="translate(1100, 80)">
+      <circle cx="0" cy="0" r="35" fill="none" stroke="#6366f1" stroke-width="2" opacity="0.7"/>
+      <circle cx="0" cy="0" r="28" fill="rgba(99,102,241,0.1)"/>
+      <circle cx="0" cy="0" r="8" fill="#6366f1">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- MCP Server - Bottom Left -->
+    <g transform="translate(100, 550)">
+      <circle cx="0" cy="0" r="35" fill="none" stroke="#8b5cf6" stroke-width="2" opacity="0.7"/>
+      <circle cx="0" cy="0" r="28" fill="rgba(139,92,246,0.1)"/>
+      <circle cx="0" cy="0" r="8" fill="#8b5cf6">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" begin="1s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Fabric Integration - Bottom Right -->
+    <g transform="translate(1100, 550)">
+      <circle cx="0" cy="0" r="35" fill="none" stroke="#DC244C" stroke-width="2" opacity="0.7"/>
+      <circle cx="0" cy="0" r="28" fill="rgba(220,36,76,0.1)"/>
+      <circle cx="0" cy="0" r="8" fill="#DC244C">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+
+  <!-- Connection lines from corners to center (data flow) -->
+  <g opacity="0.2">
+    <line x1="100" y1="80" x2="600" y2="315" stroke="#DC244C" stroke-width="2">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
+    </line>
+    <line x1="1100" y1="80" x2="600" y2="315" stroke="#6366f1" stroke-width="2">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" begin="0.75s" repeatCount="indefinite"/>
+    </line>
+    <line x1="100" y1="550" x2="600" y2="315" stroke="#8b5cf6" stroke-width="2">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+    </line>
+    <line x1="1100" y1="550" x2="600" y2="315" stroke="#DC244C" stroke-width="2">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" begin="2.25s" repeatCount="indefinite"/>
+    </line>
+  </g>
+
+  <!-- Decorative accent bars (top/bottom) -->
+  <rect x="0" y="0" width="1200" height="4" fill="#DC244C" opacity="0.4"/>
+  <rect x="0" y="626" width="1200" height="4" fill="#6366f1" opacity="0.4"/>
+
+  <!-- Corner brackets (HUD style) -->
+  <g stroke="#DC244C" stroke-width="3" fill="none" opacity="0.5">
+    <path d="M 20,60 L 20,20 L 60,20"/>
+    <path d="M 1180,60 L 1180,20 L 1140,20"/>
+    <path d="M 20,570 L 20,610 L 60,610"/>
+    <path d="M 1180,570 L 1180,610 L 1140,610"/>
   </g>
 </svg>
