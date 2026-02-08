@@ -1,170 +1,230 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500">
   <defs>
-    <!-- Background gradient -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:1" />
+    <!-- Green gradients for depth -->
+    <linearGradient id="green1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#064e3b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#065f46;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="green2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#047857;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="green3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34d399;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="green4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6ee7b7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a7f3d0;stop-opacity:1" />
     </linearGradient>
 
-    <!-- Subtle glow -->
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+    <!-- Shadow for depth -->
+    <filter id="shadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="3" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.4"/>
+      </feComponentTransfer>
       <feMerge>
-        <feMergeNode in="coloredBlur"/>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="lightShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="1200" height="400" fill="url(#bgGrad)"/>
+  <!-- Dark green background -->
+  <rect width="1200" height="500" fill="#022c22"/>
 
-  <!-- Topographic contour lines - back to front -->
+  <!-- Layer 8 - Deepest (darkest green) -->
+  <path fill="url(#green1)" filter="url(#shadow)" opacity="0.9">
+    <animate attributeName="d"
+      values="
+        M 0,450 C 150,430 300,470 450,450 C 600,430 750,470 900,450 C 1050,430 1200,450 1200,450 L 1200,500 L 0,500 Z;
+        M 0,455 C 150,435 300,475 450,455 C 600,435 750,475 900,455 C 1050,435 1200,455 1200,455 L 1200,500 L 0,500 Z;
+        M 0,450 C 150,430 300,470 450,450 C 600,430 750,470 900,450 C 1050,430 1200,450 1200,450 L 1200,500 L 0,500 Z"
+      dur="12s" repeatCount="indefinite"/>
+  </path>
 
-  <!-- Layer 1 - Deepest/furthest -->
-  <g opacity="0.2" stroke="#4a4a4a" stroke-width="1" fill="none" filter="url(#glow)">
-    <path d="M 0,320 Q 300,300 600,320 Q 900,340 1200,320">
+  <!-- Layer 7 -->
+  <path fill="url(#green1)" filter="url(#shadow)" opacity="0.95">
+    <animate attributeName="d"
+      values="
+        M 0,410 C 140,385 280,425 420,405 C 560,385 700,425 840,405 C 980,385 1120,405 1200,400 L 1200,500 L 0,500 Z;
+        M 0,415 C 140,390 280,430 420,410 C 560,390 700,430 840,410 C 980,390 1120,410 1200,405 L 1200,500 L 0,500 Z;
+        M 0,410 C 140,385 280,425 420,405 C 560,385 700,425 840,405 C 980,385 1120,405 1200,400 L 1200,500 L 0,500 Z"
+      dur="11s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Layer 6 -->
+  <path fill="url(#green2)" filter="url(#shadow)">
+    <animate attributeName="d"
+      values="
+        M 0,360 C 130,330 260,380 390,355 C 520,330 650,380 780,355 C 910,330 1040,355 1200,345 L 1200,500 L 0,500 Z;
+        M 0,365 C 130,335 260,385 390,360 C 520,335 650,385 780,360 C 910,335 1040,360 1200,350 L 1200,500 L 0,500 Z;
+        M 0,360 C 130,330 260,380 390,355 C 520,330 650,380 780,355 C 910,330 1040,355 1200,345 L 1200,500 L 0,500 Z"
+      dur="10s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Contour lines on layer 6 -->
+  <g opacity="0.3" stroke="#065f46" stroke-width="2" fill="none">
+    <path d="M 0,355 C 130,325 260,375 390,350 C 520,325 650,375 780,350 C 910,325 1040,350 1200,340">
       <animate attributeName="d"
-        values="M 0,320 Q 300,300 600,320 Q 900,340 1200,320;
-                M 0,318 Q 300,298 600,318 Q 900,338 1200,318;
-                M 0,320 Q 300,300 600,320 Q 900,340 1200,320"
-        dur="10s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,310 Q 300,290 600,310 Q 900,330 1200,310">
-      <animate attributeName="d"
-        values="M 0,310 Q 300,290 600,310 Q 900,330 1200,310;
-                M 0,308 Q 300,288 600,308 Q 900,328 1200,308;
-                M 0,310 Q 300,290 600,310 Q 900,330 1200,310"
-        dur="10s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,300 Q 300,280 600,300 Q 900,320 1200,300">
-      <animate attributeName="d"
-        values="M 0,300 Q 300,280 600,300 Q 900,320 1200,300;
-                M 0,298 Q 300,278 600,298 Q 900,318 1200,298;
-                M 0,300 Q 300,280 600,300 Q 900,320 1200,300"
+        values="M 0,355 C 130,325 260,375 390,350 C 520,325 650,375 780,350 C 910,325 1040,350 1200,340;
+                M 0,360 C 130,330 260,380 390,355 C 520,330 650,380 780,355 C 910,330 1040,355 1200,345;
+                M 0,355 C 130,325 260,375 390,350 C 520,325 650,375 780,350 C 910,325 1040,350 1200,340"
         dur="10s" repeatCount="indefinite"/>
     </path>
   </g>
 
-  <!-- Layer 2 -->
-  <g opacity="0.3" stroke="#5a5a5a" stroke-width="1.2" fill="none" filter="url(#glow)">
-    <path d="M 0,280 Q 300,255 600,280 Q 900,305 1200,280">
+  <!-- Layer 5 -->
+  <path fill="url(#green2)" filter="url(#shadow)">
+    <animate attributeName="d"
+      values="
+        M 0,300 C 120,265 240,315 360,285 C 480,255 600,305 720,275 C 840,245 960,275 1200,260 L 1200,500 L 0,500 Z;
+        M 0,305 C 120,270 240,320 360,290 C 480,260 600,310 720,280 C 840,250 960,280 1200,265 L 1200,500 L 0,500 Z;
+        M 0,300 C 120,265 240,315 360,285 C 480,255 600,305 720,275 C 840,245 960,275 1200,260 L 1200,500 L 0,500 Z"
+      dur="9s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Contour lines on layer 5 -->
+  <g opacity="0.4" stroke="#059669" stroke-width="2.5" fill="none">
+    <path d="M 0,295 C 120,260 240,310 360,280 C 480,250 600,300 720,270 C 840,240 960,270 1200,255">
       <animate attributeName="d"
-        values="M 0,280 Q 300,255 600,280 Q 900,305 1200,280;
-                M 0,276 Q 300,251 600,276 Q 900,301 1200,276;
-                M 0,280 Q 300,255 600,280 Q 900,305 1200,280"
+        values="M 0,295 C 120,260 240,310 360,280 C 480,250 600,300 720,270 C 840,240 960,270 1200,255;
+                M 0,300 C 120,265 240,315 360,285 C 480,255 600,305 720,275 C 840,245 960,275 1200,260;
+                M 0,295 C 120,260 240,310 360,280 C 480,250 600,300 720,270 C 840,240 960,270 1200,255"
         dur="9s" repeatCount="indefinite"/>
     </path>
-    <path d="M 0,265 Q 300,240 600,265 Q 900,290 1200,265">
+    <path d="M 0,280 C 120,245 240,295 360,265 C 480,235 600,285 720,255 C 840,225 960,255 1200,240">
       <animate attributeName="d"
-        values="M 0,265 Q 300,240 600,265 Q 900,290 1200,265;
-                M 0,261 Q 300,236 600,261 Q 900,286 1200,261;
-                M 0,265 Q 300,240 600,265 Q 900,290 1200,265"
+        values="M 0,280 C 120,245 240,295 360,265 C 480,235 600,285 720,255 C 840,225 960,255 1200,240;
+                M 0,285 C 120,250 240,300 360,270 C 480,240 600,290 720,260 C 840,230 960,260 1200,245;
+                M 0,280 C 120,245 240,295 360,265 C 480,235 600,285 720,255 C 840,225 960,255 1200,240"
         dur="9s" repeatCount="indefinite"/>
     </path>
-    <path d="M 0,250 Q 300,225 600,250 Q 900,275 1200,250">
+  </g>
+
+  <!-- Layer 4 -->
+  <path fill="url(#green3)" filter="url(#shadow)">
+    <animate attributeName="d"
+      values="
+        M 0,230 C 110,190 220,250 330,210 C 440,170 550,230 660,190 C 770,150 880,190 1200,165 L 1200,500 L 0,500 Z;
+        M 0,235 C 110,195 220,255 330,215 C 440,175 550,235 660,195 C 770,155 880,195 1200,170 L 1200,500 L 0,500 Z;
+        M 0,230 C 110,190 220,250 330,210 C 440,170 550,230 660,190 C 770,150 880,190 1200,165 L 1200,500 L 0,500 Z"
+      dur="8s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Contour lines on layer 4 -->
+  <g opacity="0.5" stroke="#34d399" stroke-width="3" fill="none">
+    <path d="M 0,225 C 110,185 220,245 330,205 C 440,165 550,225 660,185 C 770,145 880,185 1200,160">
       <animate attributeName="d"
-        values="M 0,250 Q 300,225 600,250 Q 900,275 1200,250;
-                M 0,246 Q 300,221 600,246 Q 900,271 1200,246;
-                M 0,250 Q 300,225 600,250 Q 900,275 1200,250"
-        dur="9s" repeatCount="indefinite"/>
+        values="M 0,225 C 110,185 220,245 330,205 C 440,165 550,225 660,185 C 770,145 880,185 1200,160;
+                M 0,230 C 110,190 220,250 330,210 C 440,170 550,230 660,190 C 770,150 880,190 1200,165;
+                M 0,225 C 110,185 220,245 330,205 C 440,165 550,225 660,185 C 770,145 880,185 1200,160"
+        dur="8s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 0,205 C 110,165 220,225 330,185 C 440,145 550,205 660,165 C 770,125 880,165 1200,140">
+      <animate attributeName="d"
+        values="M 0,205 C 110,165 220,225 330,185 C 440,145 550,205 660,165 C 770,125 880,165 1200,140;
+                M 0,210 C 110,170 220,230 330,190 C 440,150 550,210 660,170 C 770,130 880,170 1200,145;
+                M 0,205 C 110,165 220,225 330,185 C 440,145 550,205 660,165 C 770,125 880,165 1200,140"
+        dur="8s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 0,185 C 110,145 220,205 330,165 C 440,125 550,185 660,145 C 770,105 880,145 1200,120">
+      <animate attributeName="d"
+        values="M 0,185 C 110,145 220,205 330,165 C 440,125 550,185 660,145 C 770,105 880,145 1200,120;
+                M 0,190 C 110,150 220,210 330,170 C 440,130 550,190 660,150 C 770,110 880,150 1200,125;
+                M 0,185 C 110,145 220,205 330,165 C 440,125 550,185 660,145 C 770,105 880,145 1200,120"
+        dur="8s" repeatCount="indefinite"/>
     </path>
   </g>
 
   <!-- Layer 3 -->
-  <g opacity="0.4" stroke="#6a6a6a" stroke-width="1.4" fill="none" filter="url(#glow)">
-    <path d="M 0,230 Q 300,200 600,230 Q 900,260 1200,230">
-      <animate attributeName="d"
-        values="M 0,230 Q 300,200 600,230 Q 900,260 1200,230;
-                M 0,224 Q 300,194 600,224 Q 900,254 1200,224;
-                M 0,230 Q 300,200 600,230 Q 900,260 1200,230"
-        dur="8s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,210 Q 300,180 600,210 Q 900,240 1200,210">
-      <animate attributeName="d"
-        values="M 0,210 Q 300,180 600,210 Q 900,240 1200,210;
-                M 0,204 Q 300,174 600,204 Q 900,234 1200,204;
-                M 0,210 Q 300,180 600,210 Q 900,240 1200,210"
-        dur="8s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,190 Q 300,160 600,190 Q 900,220 1200,190">
-      <animate attributeName="d"
-        values="M 0,190 Q 300,160 600,190 Q 900,220 1200,190;
-                M 0,184 Q 300,154 600,184 Q 900,214 1200,184;
-                M 0,190 Q 300,160 600,190 Q 900,220 1200,190"
-        dur="8s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,170 Q 300,140 600,170 Q 900,200 1200,170">
-      <animate attributeName="d"
-        values="M 0,170 Q 300,140 600,170 Q 900,200 1200,170;
-                M 0,164 Q 300,134 600,164 Q 900,194 1200,164;
-                M 0,170 Q 300,140 600,170 Q 900,200 1200,170"
-        dur="8s" repeatCount="indefinite"/>
-    </path>
-  </g>
+  <path fill="url(#green3)" filter="url(#lightShadow)">
+    <animate attributeName="d"
+      values="
+        M 0,150 C 100,105 200,165 300,120 C 400,75 500,135 600,90 C 700,45 800,90 1200,60 L 1200,500 L 0,500 Z;
+        M 0,155 C 100,110 200,170 300,125 C 400,80 500,140 600,95 C 700,50 800,95 1200,65 L 1200,500 L 0,500 Z;
+        M 0,150 C 100,105 200,165 300,120 C 400,75 500,135 600,90 C 700,45 800,90 1200,60 L 1200,500 L 0,500 Z"
+      dur="7s" repeatCount="indefinite"/>
+  </path>
 
-  <!-- Layer 4 - Mid tones -->
-  <g opacity="0.5" stroke="#7a7a7a" stroke-width="1.6" fill="none" filter="url(#glow)">
-    <path d="M 0,150 Q 300,115 600,150 Q 900,185 1200,150">
+  <!-- Contour lines on layer 3 -->
+  <g opacity="0.6" stroke="#6ee7b7" stroke-width="3" fill="none">
+    <path d="M 0,145 C 100,100 200,160 300,115 C 400,70 500,130 600,85 C 700,40 800,85 1200,55">
       <animate attributeName="d"
-        values="M 0,150 Q 300,115 600,150 Q 900,185 1200,150;
-                M 0,142 Q 300,107 600,142 Q 900,177 1200,142;
-                M 0,150 Q 300,115 600,150 Q 900,185 1200,150"
+        values="M 0,145 C 100,100 200,160 300,115 C 400,70 500,130 600,85 C 700,40 800,85 1200,55;
+                M 0,150 C 100,105 200,165 300,120 C 400,75 500,135 600,90 C 700,45 800,90 1200,60;
+                M 0,145 C 100,100 200,160 300,115 C 400,70 500,130 600,85 C 700,40 800,85 1200,55"
         dur="7s" repeatCount="indefinite"/>
     </path>
-    <path d="M 0,125 Q 300,90 600,125 Q 900,160 1200,125">
+    <path d="M 0,120 C 100,75 200,135 300,90 C 400,45 500,105 600,60 C 700,15 800,60 1200,30">
       <animate attributeName="d"
-        values="M 0,125 Q 300,90 600,125 Q 900,160 1200,125;
-                M 0,117 Q 300,82 600,117 Q 900,152 1200,117;
-                M 0,125 Q 300,90 600,125 Q 900,160 1200,125"
-        dur="7s" repeatCount="indefinite"/>
-    </path>
-    <path d="M 0,100 Q 300,65 600,100 Q 900,135 1200,100">
-      <animate attributeName="d"
-        values="M 0,100 Q 300,65 600,100 Q 900,135 1200,100;
-                M 0,92 Q 300,57 600,92 Q 900,127 1200,92;
-                M 0,100 Q 300,65 600,100 Q 900,135 1200,100"
+        values="M 0,120 C 100,75 200,135 300,90 C 400,45 500,105 600,60 C 700,15 800,60 1200,30;
+                M 0,125 C 100,80 200,140 300,95 C 400,50 500,110 600,65 C 700,20 800,65 1200,35;
+                M 0,120 C 100,75 200,135 300,90 C 400,45 500,105 600,60 C 700,15 800,60 1200,30"
         dur="7s" repeatCount="indefinite"/>
     </path>
   </g>
 
-  <!-- Layer 5 - Brighter -->
-  <g opacity="0.6" stroke="#8a8a8a" stroke-width="1.8" fill="none" filter="url(#glow)">
-    <path d="M 0,80 Q 300,40 600,80 Q 900,120 1200,80">
+  <!-- Layer 2 -->
+  <path fill="url(#green4)" filter="url(#lightShadow)">
+    <animate attributeName="d"
+      values="
+        M 0,80 C 90,30 180,95 270,45 C 360,-5 450,60 540,10 C 630,-40 720,10 1200,-25 L 1200,500 L 0,500 Z;
+        M 0,85 C 90,35 180,100 270,50 C 360,0 450,65 540,15 C 630,-35 720,15 1200,-20 L 1200,500 L 0,500 Z;
+        M 0,80 C 90,30 180,95 270,45 C 360,-5 450,60 540,10 C 630,-40 720,10 1200,-25 L 1200,500 L 0,500 Z"
+      dur="6s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Contour lines on layer 2 - brightest -->
+  <g opacity="0.7" stroke="#d1fae5" stroke-width="3.5" fill="none">
+    <path d="M 0,75 C 90,25 180,90 270,40 C 360,-10 450,55 540,5 C 630,-45 720,5 1200,-30">
       <animate attributeName="d"
-        values="M 0,80 Q 300,40 600,80 Q 900,120 1200,80;
-                M 0,70 Q 300,30 600,70 Q 900,110 1200,70;
-                M 0,80 Q 300,40 600,80 Q 900,120 1200,80"
+        values="M 0,75 C 90,25 180,90 270,40 C 360,-10 450,55 540,5 C 630,-45 720,5 1200,-30;
+                M 0,80 C 90,30 180,95 270,45 C 360,-5 450,60 540,10 C 630,-40 720,10 1200,-25;
+                M 0,75 C 90,25 180,90 270,40 C 360,-10 450,55 540,5 C 630,-45 720,5 1200,-30"
         dur="6s" repeatCount="indefinite"/>
     </path>
-    <path d="M 0,55 Q 300,15 600,55 Q 900,95 1200,55">
+    <path d="M 0,45 C 90,-5 180,60 270,10 C 360,-40 450,25 540,-25 C 630,-75 720,-25 1200,-60">
       <animate attributeName="d"
-        values="M 0,55 Q 300,15 600,55 Q 900,95 1200,55;
-                M 0,45 Q 300,5 600,45 Q 900,85 1200,45;
-                M 0,55 Q 300,15 600,55 Q 900,95 1200,55"
+        values="M 0,45 C 90,-5 180,60 270,10 C 360,-40 450,25 540,-25 C 630,-75 720,-25 1200,-60;
+                M 0,50 C 90,0 180,65 270,15 C 360,-35 450,30 540,-20 C 630,-70 720,-20 1200,-55;
+                M 0,45 C 90,-5 180,60 270,10 C 360,-40 450,25 540,-25 C 630,-75 720,-25 1200,-60"
         dur="6s" repeatCount="indefinite"/>
     </path>
   </g>
 
-  <!-- Layer 6 - Front, brightest -->
-  <g opacity="0.8" stroke="#aaaaaa" stroke-width="2" fill="none" filter="url(#glow)">
-    <path d="M 0,35 Q 300,-10 600,35 Q 900,80 1200,35">
+  <!-- Layer 1 - Front, lightest -->
+  <path fill="url(#green4)" filter="url(#lightShadow)" opacity="0.95">
+    <animate attributeName="d"
+      values="
+        M 0,30 C 80,-25 160,45 240,-10 C 320,-65 400,0 480,-55 C 560,-110 640,-55 1200,-95 L 1200,500 L 0,500 Z;
+        M 0,35 C 80,-20 160,50 240,-5 C 320,-60 400,5 480,-50 C 560,-105 640,-50 1200,-90 L 1200,500 L 0,500 Z;
+        M 0,30 C 80,-25 160,45 240,-10 C 320,-65 400,0 480,-55 C 560,-110 640,-55 1200,-95 L 1200,500 L 0,500 Z"
+      dur="5s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Brightest contour on front layer -->
+  <g opacity="0.8" stroke="#ecfdf5" stroke-width="4" fill="none">
+    <path d="M 0,25 C 80,-30 160,40 240,-15 C 320,-70 400,-5 480,-60 C 560,-115 640,-60 1200,-100">
       <animate attributeName="d"
-        values="M 0,35 Q 300,-10 600,35 Q 900,80 1200,35;
-                M 0,20 Q 300,-25 600,20 Q 900,65 1200,20;
-                M 0,35 Q 300,-10 600,35 Q 900,80 1200,35"
+        values="M 0,25 C 80,-30 160,40 240,-15 C 320,-70 400,-5 480,-60 C 560,-115 640,-60 1200,-100;
+                M 0,30 C 80,-25 160,45 240,-10 C 320,-65 400,0 480,-55 C 560,-110 640,-55 1200,-95;
+                M 0,25 C 80,-30 160,40 240,-15 C 320,-70 400,-5 480,-60 C 560,-115 640,-60 1200,-100"
         dur="5s" repeatCount="indefinite"/>
     </path>
-  </g>
-
-  <!-- Subtle grid lines for depth -->
-  <g opacity="0.05" stroke="#666666" stroke-width="0.5" fill="none">
-    <line x1="0" y1="0" x2="0" y2="400"/>
-    <line x1="200" y1="0" x2="200" y2="400"/>
-    <line x1="400" y1="0" x2="400" y2="400"/>
-    <line x1="600" y1="0" x2="600" y2="400"/>
-    <line x1="800" y1="0" x2="800" y2="400"/>
-    <line x1="1000" y1="0" x2="1000" y2="400"/>
-    <line x1="1200" y1="0" x2="1200" y2="400"/>
   </g>
 </svg>
