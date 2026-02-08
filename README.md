@@ -1,10 +1,10 @@
 <div align="center">
   <img src="assets/qdrant-fabric-hero.svg" alt="Qdrant Fabric" width="100%"/>
-
-  # Qdrant Fabric
-
-  A comprehensive Model Context Protocol (MCP) server providing access to both Qdrant Cloud Management and Database APIs as part of the Infrastructure as a Fabric ecosystem.
 </div>
+
+# Qdrant Fabric
+
+A comprehensive Model Context Protocol (MCP) server providing access to both Qdrant Cloud Management and Database APIs as part of the Infrastructure as a Fabric ecosystem.
 
 ## Features
 

@@ -38,8 +38,18 @@
   <!-- Title -->
   <text x="500" y="30" text-anchor="middle" fill="white" font-family="system-ui" font-weight="700" font-size="20">qdrant-fabric Infrastructure Flow</text>
 
+  <!-- n8n-fabric (Top Left) -->
+  <g transform="translate(50, 60)">
+    <rect width="140" height="60" rx="8" fill="url(#n8nGrad)" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.9;1;0.9" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    <text x="70" y="22" text-anchor="middle" fill="white" font-size="18">⚙️</text>
+    <text x="70" y="40" text-anchor="middle" fill="white" font-family="system-ui" font-weight="600" font-size="12">n8n-fabric</text>
+    <text x="70" y="52" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui" font-size="9">Automation</text>
+  </g>
+
   <!-- Local Qdrant -->
-  <g transform="translate(50, 120)">
+  <g transform="translate(50, 150)">
     <rect width="140" height="160" rx="12" fill="url(#localQdrantGrad)" filter="url(#glow)">
       <animate attributeName="opacity" values="0.9;1;0.9" dur="3s" repeatCount="indefinite"/>
     </rect>
@@ -55,14 +65,23 @@
     <text x="70" y="128" text-anchor="middle" fill="rgba(52,211,153,0.8)" font-family="monospace" font-size="8">+ 4 more...</text>
   </g>
 
+  <!-- Arrow: n8n to Local Qdrant -->
+  <g>
+    <path d="M 120,120 L 120,150" stroke="#F87171" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+    <circle r="5" fill="#F87171">
+      <animateMotion dur="2s" repeatCount="indefinite" path="M 120,120 L 120,150"/>
+      <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
   <!-- Arrow: Local to MCP -->
   <g>
-    <line x1="200" y1="200" x2="340" y2="200" stroke="#475569" stroke-width="3" stroke-dasharray="8,4"/>
+    <line x1="200" y1="230" x2="340" y2="200" stroke="#475569" stroke-width="3" stroke-dasharray="8,4"/>
     <circle r="7" fill="#34D399" filter="url(#glow)">
-      <animateMotion dur="2s" repeatCount="indefinite" path="M200,200 L340,200"/>
+      <animateMotion dur="2s" repeatCount="indefinite" path="M200,230 L340,200"/>
       <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
     </circle>
-    <text x="270" y="188" text-anchor="middle" fill="#94A3B8" font-family="system-ui" font-size="11">DB API</text>
+    <text x="270" y="205" text-anchor="middle" fill="#94A3B8" font-family="system-ui" font-size="11">DB API</text>
   </g>
 
   <!-- MCP Server (Center) -->
@@ -129,53 +148,38 @@
   </g>
 
   <!-- AIANA (Bottom Left) -->
-  <g transform="translate(130, 320)">
-    <rect width="100" height="60" rx="8" fill="url(#aianaGrad)" filter="url(#glow)"/>
-    <text x="50" y="22" text-anchor="middle" fill="white" font-size="18">🧠</text>
-    <text x="50" y="40" text-anchor="middle" fill="white" font-family="system-ui" font-weight="600" font-size="12">AIANA</text>
-    <text x="50" y="52" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui" font-size="9">Semantic Memory</text>
+  <g transform="translate(50, 330)">
+    <rect width="140" height="60" rx="8" fill="url(#aianaGrad)" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.9;1;0.9" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    <text x="70" y="22" text-anchor="middle" fill="white" font-size="18">🧠</text>
+    <text x="70" y="40" text-anchor="middle" fill="white" font-family="system-ui" font-weight="600" font-size="12">AIANA</text>
+    <text x="70" y="52" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui" font-size="9">Semantic Memory</text>
   </g>
 
-  <!-- Arrow: AIANA to Local (bidirectional) -->
+  <!-- Arrow: AIANA to Local Qdrant -->
   <g>
-    <path d="M 180,320 L 120,280" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+    <path d="M 120,330 L 120,310" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
     <circle r="5" fill="#F59E0B">
-      <animateMotion dur="3s" repeatCount="indefinite" path="M 180,320 L 120,280"/>
-      <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/>
-    </circle>
-  </g>
-
-  <!-- n8n (Bottom Right) -->
-  <g transform="translate(740, 320)">
-    <rect width="100" height="60" rx="8" fill="url(#n8nGrad)" filter="url(#glow)"/>
-    <text x="50" y="22" text-anchor="middle" fill="white" font-size="18">⚙️</text>
-    <text x="50" y="40" text-anchor="middle" fill="white" font-family="system-ui" font-weight="600" font-size="12">n8n-fabric</text>
-    <text x="50" y="52" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="system-ui" font-size="9">Automation</text>
-  </g>
-
-  <!-- Arrow: n8n to Local (bidirectional) -->
-  <g>
-    <path d="M 740,320 L 190,280" stroke="#F87171" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
-    <circle r="5" fill="#F87171">
-      <animateMotion dur="3.5s" repeatCount="indefinite" path="M 740,320 L 190,280"/>
-      <animate attributeName="opacity" values="0;1;0" dur="3.5s" repeatCount="indefinite"/>
+      <animateMotion dur="2s" repeatCount="indefinite" path="M 120,330 L 120,310"/>
+      <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
     </circle>
   </g>
 
   <!-- Arrow: AIANA to MCP -->
   <g>
-    <path d="M 230,350 L 380,300" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+    <path d="M 190,360 L 350,300" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
     <circle r="5" fill="#F59E0B">
-      <animateMotion dur="2.8s" repeatCount="indefinite" path="M 230,350 L 380,300"/>
+      <animateMotion dur="2.8s" repeatCount="indefinite" path="M 190,360 L 350,300"/>
       <animate attributeName="opacity" values="0;1;0" dur="2.8s" repeatCount="indefinite"/>
     </circle>
   </g>
 
   <!-- Arrow: n8n to MCP -->
   <g>
-    <path d="M 740,350 L 530,300" stroke="#F87171" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+    <path d="M 190,90 L 350,150" stroke="#F87171" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
     <circle r="5" fill="#F87171">
-      <animateMotion dur="2.8s" repeatCount="indefinite" path="M 740,350 L 530,300"/>
+      <animateMotion dur="2.8s" repeatCount="indefinite" path="M 190,90 L 350,150"/>
       <animate attributeName="opacity" values="0;1;0" dur="2.8s" repeatCount="indefinite"/>
     </circle>
   </g>
