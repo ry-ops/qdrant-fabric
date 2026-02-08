@@ -1,6 +1,6 @@
 [project]
 name = "qdrant-fabric"
-version = "0.1.0"
+version = "0.0.2"
 description = "Model Context Protocol server for Qdrant Cloud Management and Database APIs - Part of Infrastructure as a Fabric"
 authors = [
     {name = "Ryan Dahlberg", email = "ryan@example.com"}
