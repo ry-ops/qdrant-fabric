@@ -18,7 +18,7 @@
 ## Infrastructure Fabric
 
 <div align="center">
-  <img src="assets/infrastructure-fabric.svg" alt="Infrastructure as a Fabric Architecture" width="100%"/>
+  <img src="assets/infrastructure-fabric-static.svg" alt="Infrastructure as a Fabric Architecture" width="100%"/>
   <br/>
   <em>Complete ecosystem showing local Qdrant, MCP server, cloud management, and fabric integrations</em>
 </div>
