@@ -8,12 +8,12 @@
 
 ## Features
 
-- **Complete API Coverage**: 189 operations across Cloud Management (118 gRPC) and Database (71 REST) APIs
-- **Dual API Support**: Manage cloud infrastructure and perform vector operations
+- **30 Database Tools**: Complete Phase 1 implementation with all core database operations
+- **Full MCP Integration**: Works seamlessly with Claude Desktop and other MCP clients
 - **Type-Safe**: Full Pydantic validation and type hints
 - **Async-First**: Built on modern async Python patterns
-- **Well-Tested**: Comprehensive test coverage
 - **Fabric Integration**: Seamlessly integrates with AIANA and n8n-fabric
+- **Comprehensive**: Collections, Points, Search, Payload, Health, Vectors, and Index operations
 
 ## Infrastructure Fabric
 
@@ -39,7 +39,31 @@ pip install qdrant-fabric
 
 ### Configure Claude Desktop
 
-Add to your `~/.claude/.mcp.json`:
+Add to your Claude Desktop config (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "qdrant-fabric": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "/path/to/qdrant-fabric",
+        "python",
+        "-m",
+        "qdrant_mcp"
+      ],
+      "env": {
+        "QDRANT_API_KEY": "your-database-api-key",
+        "QDRANT_URL": "http://localhost:6333"
+      }
+    }
+  }
+}
+```
+
+Or use Python directly:
 
 ```json
 {
@@ -48,43 +72,74 @@ Add to your `~/.claude/.mcp.json`:
       "command": "python",
       "args": ["-m", "qdrant_mcp"],
       "env": {
-        "QDRANT_CLOUD_API_KEY": "your-cloud-api-key",
         "QDRANT_API_KEY": "your-database-api-key",
-        "QDRANT_URL": "https://your-cluster.qdrant.io"
+        "QDRANT_URL": "http://localhost:6333"
       }
     }
   }
 }
 ```
 
-### Usage Examples
+### Available Tools (v0.0.3)
 
-**List Collections:**
-```python
-# Claude can use: qdrant_db_collections_list
-# Returns all collections in your database
-```
+All 30 Phase 1 database tools are now available:
 
-**Search Vectors:**
-```python
-# Claude can use: qdrant_db_points_search
-# Search for similar vectors in a collection
-```
+**Collections Management (6 tools)**
+- `qdrant_db_collections_list` - List all collections
+- `qdrant_db_collections_get` - Get collection details
+- `qdrant_db_collections_create` - Create new collection
+- `qdrant_db_collections_delete` - Delete collection
+- `qdrant_db_collections_update` - Update collection configuration
+- `qdrant_db_collections_exists` - Check if collection exists
 
-**Create Cluster:**
-```python
-# Claude can use: qdrant_cloud_clusters_create
-# Create a new managed Qdrant cluster
-```
+**Points Operations (7 tools)**
+- `qdrant_db_points_upsert` - Insert or update points
+- `qdrant_db_points_get` - Retrieve multiple points by ID
+- `qdrant_db_points_get_single` - Get single point by ID
+- `qdrant_db_points_delete` - Delete points
+- `qdrant_db_points_count` - Count points with optional filter
+- `qdrant_db_points_scroll` - Scroll through points
+- `qdrant_db_points_batch` - Batch point operations
+
+**Vector Search (4 tools)**
+- `qdrant_db_points_search` - Vector similarity search
+- `qdrant_db_points_search_batch` - Batch search queries
+- `qdrant_db_points_recommend` - Recommendation based on examples
+- `qdrant_db_points_recommend_batch` - Batch recommendations
+
+**Payload Management (4 tools)**
+- `qdrant_db_payload_set` - Set payload (merge with existing)
+- `qdrant_db_payload_overwrite` - Overwrite payload (replace)
+- `qdrant_db_payload_delete` - Delete specific payload fields
+- `qdrant_db_payload_clear` - Clear all payload
+
+**Health Checks (5 tools)**
+- `qdrant_db_health_root` - Version and build information
+- `qdrant_db_health_check` - Health check
+- `qdrant_db_health_liveness` - Liveness probe
+- `qdrant_db_health_readiness` - Readiness probe
+- `qdrant_db_health_metrics` - Prometheus metrics
+
+**Vector Operations (2 tools)**
+- `qdrant_db_vectors_update` - Update vectors for existing points
+- `qdrant_db_vectors_delete` - Delete named vectors
+
+**Index Management (2 tools)**
+- `qdrant_db_index_create` - Create field index for faster filtering
+- `qdrant_db_index_delete` - Delete field index
 
 ## API Coverage
 
-### Phase 1: Core Database Operations (Implemented)
-- ✅ Collections CRUD (6 tools)
-- ✅ Points CRUD (10 tools)
+### Phase 1: Core Database Operations ✅ Complete (v0.0.3)
+- ✅ Collections Management (6 tools)
+- ✅ Points Operations (7 tools)
 - ✅ Vector Search (4 tools)
-- ✅ Payload operations (5 tools)
-- ✅ Health checks (5 tools)
+- ✅ Payload Management (4 tools)
+- ✅ Health Checks (5 tools)
+- ✅ Vector Operations (2 tools)
+- ✅ Index Management (2 tools)
+
+**Total: 30 tools**
 
 ### Coming Soon
 - Phase 2: Cloud Management Essentials
@@ -101,8 +156,10 @@ Add to your `~/.claude/.mcp.json`:
 - `QDRANT_CLOUD_URL` - Cloud API base URL (default: `https://cloud.qdrant.io`)
 
 **Database API:**
-- `QDRANT_API_KEY` - API key for database access
-- `QDRANT_URL` - Database URL (e.g., `https://xyz.qdrant.io`)
+- `QDRANT_API_KEY` - API key for database access (optional for local instances)
+- `QDRANT_URL` - Database URL (e.g., `http://localhost:6333` or `https://xyz.qdrant.io`)
+
+**Note:** Cloud Management API tools are coming in Phase 2. Currently, only Database API tools are available.
 
 ## Development
 
