@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/qdrant-fabric-logo.svg" alt="Qdrant Fabric" width="800"/>
+  <img src="assets/qdrant-fabric-hero.svg" alt="Qdrant Fabric" width="100%"/>
 
   # Qdrant Fabric
 
