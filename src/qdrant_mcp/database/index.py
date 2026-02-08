@@ -44,7 +44,7 @@ async def delete_field_index(
     return await client.delete(f"/collections/{collection_name}/index/{field_name}")
 
 
-def register_index_tools(server: Server, client: QdrantDatabaseClient) -> None:
+def register_index_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
     """Register index management tools with MCP server.
 
     Args:

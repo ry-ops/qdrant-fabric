@@ -48,7 +48,7 @@ async def delete_vectors(
     return await client.post(f"/collections/{collection_name}/points/vectors/delete", json=body)
 
 
-def register_vector_tools(server: Server, client: QdrantDatabaseClient) -> None:
+def register_vector_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
     """Register vector operation tools with MCP server.
 
     Args:

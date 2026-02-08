@@ -102,7 +102,7 @@ async def recommend_batch_points(
     )
 
 
-def register_search_tools(server: Server, client: QdrantDatabaseClient) -> None:
+def register_search_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
     """Register vector search tools with MCP server.
 
     Args:

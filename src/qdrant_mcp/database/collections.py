@@ -83,13 +83,71 @@ async def collection_exists(client: QdrantDatabaseClient, collection_name: str) 
     return await client.get(f"/collections/{collection_name}/exists")
 
 
-def register_collection_tools(server: Server, client: QdrantDatabaseClient) -> None:
+def register_collection_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
     """Register collection management tools with MCP server.
 
     Args:
         server: MCP server instance
         client: Qdrant database client
+        tools_list: List to append tool definitions to
     """
+
+    from mcp.types import Tool
+
+    # Define tools
+    tools_list.append(Tool(
+        name="qdrant_db_collections_list",
+        description="List all collections in the Qdrant database",
+        inputSchema={"type": "object", "properties": {}, "required": []},
+    ))
+    tools_list.append(Tool(
+        name="qdrant_db_collections_get",
+        description="Get detailed information about a specific collection",
+        inputSchema={
+            "type": "object",
+            "properties": {"collection_name": {"type": "string"}},
+            "required": ["collection_name"],
+        },
+    ))
+    tools_list.append(Tool(
+        name="qdrant_db_collections_create",
+        description="Create a new collection",
+        inputSchema={
+            "type": "object",
+            "properties": {
+                "collection_name": {"type": "string"},
+                "vectors": {"type": "object"},
+            },
+            "required": ["collection_name", "vectors"],
+        },
+    ))
+    tools_list.append(Tool(
+        name="qdrant_db_collections_delete",
+        description="Delete a collection",
+        inputSchema={
+            "type": "object",
+            "properties": {"collection_name": {"type": "string"}},
+            "required": ["collection_name"],
+        },
+    ))
+    tools_list.append(Tool(
+        name="qdrant_db_collections_update",
+        description="Update collection configuration",
+        inputSchema={
+            "type": "object",
+            "properties": {"collection_name": {"type": "string"}},
+            "required": ["collection_name"],
+        },
+    ))
+    tools_list.append(Tool(
+        name="qdrant_db_collections_exists",
+        description="Check if a collection exists",
+        inputSchema={
+            "type": "object",
+            "properties": {"collection_name": {"type": "string"}},
+            "required": ["collection_name"],
+        },
+    ))
 
     @server.call_tool()
     async def qdrant_db_collections_list(arguments: dict[str, Any]) -> list[dict[str, Any]]:

@@ -60,7 +60,7 @@ async def metrics(client: QdrantDatabaseClient) -> str:
     return response.text
 
 
-def register_health_tools(server: Server, client: QdrantDatabaseClient) -> None:
+def register_health_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
     """Register health check tools with MCP server.
 
     Args:

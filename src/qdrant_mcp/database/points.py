@@ -130,7 +130,7 @@ async def batch_update(
     )
 
 
-def register_point_tools(server: Server, client: QdrantDatabaseClient) -> None:
+def register_point_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
     """Register point management tools with MCP server.
 
     Args:

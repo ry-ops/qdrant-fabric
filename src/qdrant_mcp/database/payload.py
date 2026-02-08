@@ -90,7 +90,7 @@ async def clear_payload(
     )
 
 
-def register_payload_tools(server: Server, client: QdrantDatabaseClient) -> None:
+def register_payload_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
     """Register payload management tools with MCP server.
 
     Args:
