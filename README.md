@@ -15,6 +15,22 @@
 - **Well-Tested**: Comprehensive test coverage
 - **Fabric Integration**: Seamlessly integrates with AIANA and n8n-fabric
 
+## Infrastructure Fabric
+
+<div align="center">
+  <img src="assets/infrastructure-fabric.svg" alt="Infrastructure as a Fabric Architecture" width="100%"/>
+  <br/>
+  <em>Complete ecosystem showing local Qdrant, MCP server, cloud management, and fabric integrations</em>
+</div>
+
+The qdrant-fabric MCP server sits at the heart of the infrastructure, connecting:
+- **Local Qdrant** (localhost:6333) - Your development instance with collections
+- **Qdrant Cloud** - Managed clusters, backups, and production infrastructure
+- **AIANA** - AI Assistant with semantic memory (`aiana_memories` collection)
+- **n8n-fabric** - Workflow automation with vector indexing (`n8n_workflows` collection)
+
+This hybrid architecture enables seamless local development while providing full cloud management capabilities.
+
 ## Installation
 
 ```bash
