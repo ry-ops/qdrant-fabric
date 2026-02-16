@@ -80,7 +80,7 @@ Or use Python directly:
 }
 ```
 
-### Available Tools (v0.0.3)
+### Available Tools (v0.0.4)
 
 All 30 Phase 1 database tools are now available:
 
@@ -130,7 +130,7 @@ All 30 Phase 1 database tools are now available:
 
 ## API Coverage
 
-### Phase 1: Core Database Operations ✅ Complete (v0.0.3)
+### Phase 1: Core Database Operations ✅ Complete (v0.0.4)
 - ✅ Collections Management (6 tools)
 - ✅ Points Operations (7 tools)
 - ✅ Vector Search (4 tools)
