@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from mcp.server import Server
+from mcp.types import Tool
 
 from .client import QdrantDatabaseClient
 
@@ -44,16 +44,14 @@ async def delete_field_index(
     return await client.delete(f"/collections/{collection_name}/index/{field_name}")
 
 
-def register_index_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
-    """Register index management tools with MCP server.
+def register_index_tools(client: QdrantDatabaseClient, tools_list: list, handlers: dict) -> None:
+    """Register index management tools.
 
     Args:
-        server: MCP server instance
         client: Qdrant database client
         tools_list: List to append tool definitions to
+        handlers: Mapping of tool name -> async handler to populate
     """
-    from mcp.types import Tool
-
     # Define tools
     tools_list.extend([
         Tool(
@@ -83,17 +81,8 @@ def register_index_tools(server: Server, client: QdrantDatabaseClient, tools_lis
         ),
     ])
 
-    @server.call_tool()
     async def qdrant_db_index_create(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Create an index for a payload field.
-
-        Creates an index to speed up filtering operations on a specific field.
-
-        Args:
-            collection_name: Name of the collection
-            field_name: Name of the field to index
-            field_schema: Optional field schema configuration
-        """
+        """Create an index for a payload field."""
         result = await create_field_index(
             client,
             arguments["collection_name"],
@@ -102,17 +91,16 @@ def register_index_tools(server: Server, client: QdrantDatabaseClient, tools_lis
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_index_delete(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Delete an index for a payload field.
-
-        Removes the index from a field. Filtering on this field will be slower.
-
-        Args:
-            collection_name: Name of the collection
-            field_name: Name of the field to remove index from
-        """
+        """Delete an index for a payload field."""
         result = await delete_field_index(
             client, arguments["collection_name"], arguments["field_name"]
         )
         return [{"type": "text", "text": str(result)}]
+
+    handlers.update(
+        {
+            "qdrant_db_index_create": qdrant_db_index_create,
+            "qdrant_db_index_delete": qdrant_db_index_delete,
+        }
+    )

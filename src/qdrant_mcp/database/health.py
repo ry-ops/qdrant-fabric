@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from mcp.server import Server
+from mcp.types import Tool
 
 from .client import QdrantDatabaseClient
 
@@ -60,16 +60,14 @@ async def metrics(client: QdrantDatabaseClient) -> str:
     return response.text
 
 
-def register_health_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
-    """Register health check tools with MCP server.
+def register_health_tools(client: QdrantDatabaseClient, tools_list: list, handlers: dict) -> None:
+    """Register health check tools.
 
     Args:
-        server: MCP server instance
         client: Qdrant database client
         tools_list: List to append tool definitions to
+        handlers: Mapping of tool name -> async handler to populate
     """
-    from mcp.types import Tool
-
     # Define tools
     tools_list.extend([
         Tool(
@@ -99,47 +97,37 @@ def register_health_tools(server: Server, client: QdrantDatabaseClient, tools_li
         ),
     ])
 
-    @server.call_tool()
     async def qdrant_db_health_root(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Get Qdrant version and build information.
-
-        Returns version, title, and build information.
-        """
+        """Get Qdrant version and build information."""
         result = await get_root(client)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_health_check(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Perform health check on Qdrant database.
-
-        Returns health status of the database.
-        """
+        """Perform health check on Qdrant database."""
         result = await healthz(client)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_health_liveness(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Check if Qdrant service is running.
-
-        Liveness probe for Kubernetes-style health checks.
-        """
+        """Check if Qdrant service is running."""
         result = await livez(client)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_health_readiness(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Check if Qdrant service is ready to serve requests.
-
-        Readiness probe for Kubernetes-style health checks.
-        """
+        """Check if Qdrant service is ready to serve requests."""
         result = await readyz(client)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_health_metrics(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Get Prometheus metrics from Qdrant.
-
-        Returns metrics in Prometheus text format.
-        """
+        """Get Prometheus metrics from Qdrant."""
         result = await metrics(client)
         return [{"type": "text", "text": result}]
+
+    handlers.update(
+        {
+            "qdrant_db_health_root": qdrant_db_health_root,
+            "qdrant_db_health_check": qdrant_db_health_check,
+            "qdrant_db_health_liveness": qdrant_db_health_liveness,
+            "qdrant_db_health_readiness": qdrant_db_health_readiness,
+            "qdrant_db_health_metrics": qdrant_db_health_metrics,
+        }
+    )

@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from mcp.server import Server
+from mcp.types import Tool
 
 from .client import QdrantDatabaseClient
 
@@ -48,16 +48,14 @@ async def delete_vectors(
     return await client.post(f"/collections/{collection_name}/points/vectors/delete", json=body)
 
 
-def register_vector_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
-    """Register vector operation tools with MCP server.
+def register_vector_tools(client: QdrantDatabaseClient, tools_list: list, handlers: dict) -> None:
+    """Register vector operation tools.
 
     Args:
-        server: MCP server instance
         client: Qdrant database client
         tools_list: List to append tool definitions to
+        handlers: Mapping of tool name -> async handler to populate
     """
-    from mcp.types import Tool
-
     # Define tools
     tools_list.extend([
         Tool(
@@ -87,28 +85,15 @@ def register_vector_tools(server: Server, client: QdrantDatabaseClient, tools_li
         ),
     ])
 
-    @server.call_tool()
     async def qdrant_db_vectors_update(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Update vectors for existing points.
-
-        Args:
-            collection_name: Name of the collection
-            points: List of points with id and vector fields
-        """
+        """Update vectors for existing points."""
         result = await update_vectors(
             client, arguments["collection_name"], arguments["points"]
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_vectors_delete(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Delete vectors from points.
-
-        Args:
-            collection_name: Name of the collection
-            points: List of point IDs to delete vectors from
-            vector_names: Optional list of vector names (for named vectors)
-        """
+        """Delete vectors from points."""
         result = await delete_vectors(
             client,
             arguments["collection_name"],
@@ -116,3 +101,10 @@ def register_vector_tools(server: Server, client: QdrantDatabaseClient, tools_li
             arguments.get("vector_names"),
         )
         return [{"type": "text", "text": str(result)}]
+
+    handlers.update(
+        {
+            "qdrant_db_vectors_update": qdrant_db_vectors_update,
+            "qdrant_db_vectors_delete": qdrant_db_vectors_delete,
+        }
+    )

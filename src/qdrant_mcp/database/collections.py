@@ -2,7 +2,6 @@
 
 from typing import Any
 
-from mcp.server import Server
 from mcp.types import Tool
 
 from .client import QdrantDatabaseClient
@@ -83,17 +82,16 @@ async def collection_exists(client: QdrantDatabaseClient, collection_name: str) 
     return await client.get(f"/collections/{collection_name}/exists")
 
 
-def register_collection_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
-    """Register collection management tools with MCP server.
+def register_collection_tools(
+    client: QdrantDatabaseClient, tools_list: list, handlers: dict
+) -> None:
+    """Register collection management tools.
 
     Args:
-        server: MCP server instance
         client: Qdrant database client
         tools_list: List to append tool definitions to
+        handlers: Mapping of tool name -> async handler to populate
     """
-
-    from mcp.types import Tool
-
     # Define tools
     tools_list.append(Tool(
         name="qdrant_db_collections_list",
@@ -149,72 +147,51 @@ def register_collection_tools(server: Server, client: QdrantDatabaseClient, tool
         },
     ))
 
-    @server.call_tool()
     async def qdrant_db_collections_list(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """List all collections in the Qdrant database.
-
-        Returns a list of all collections with their configurations.
-        """
+        """List all collections in the Qdrant database."""
         result = await list_collections(client)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_collections_get(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Get detailed information about a specific collection.
-
-        Args:
-            collection_name: Name of the collection to retrieve
-        """
+        """Get detailed information about a specific collection."""
         collection_name = arguments["collection_name"]
         result = await get_collection(client, collection_name)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_collections_create(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Create a new collection with specified configuration.
-
-        Args:
-            collection_name: Name for the new collection
-            vectors: Vector configuration (size, distance metric)
-            Additional optional parameters for collection configuration
-        """
+        """Create a new collection with specified configuration."""
         collection_name = arguments["collection_name"]
         # Remove collection_name from arguments to get config
         config = {k: v for k, v in arguments.items() if k != "collection_name"}
         result = await create_collection(client, collection_name, config)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_collections_delete(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Delete a collection and all its data.
-
-        Args:
-            collection_name: Name of the collection to delete
-        """
+        """Delete a collection and all its data."""
         collection_name = arguments["collection_name"]
         result = await delete_collection(client, collection_name)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_collections_update(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Update collection configuration.
-
-        Args:
-            collection_name: Name of the collection
-            Updates to apply to the collection configuration
-        """
+        """Update collection configuration."""
         collection_name = arguments["collection_name"]
         updates = {k: v for k, v in arguments.items() if k != "collection_name"}
         result = await update_collection(client, collection_name, updates)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_collections_exists(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Check if a collection exists.
-
-        Args:
-            collection_name: Name of the collection to check
-        """
+        """Check if a collection exists."""
         collection_name = arguments["collection_name"]
         result = await collection_exists(client, collection_name)
         return [{"type": "text", "text": str(result)}]
+
+    handlers.update(
+        {
+            "qdrant_db_collections_list": qdrant_db_collections_list,
+            "qdrant_db_collections_get": qdrant_db_collections_get,
+            "qdrant_db_collections_create": qdrant_db_collections_create,
+            "qdrant_db_collections_delete": qdrant_db_collections_delete,
+            "qdrant_db_collections_update": qdrant_db_collections_update,
+            "qdrant_db_collections_exists": qdrant_db_collections_exists,
+        }
+    )

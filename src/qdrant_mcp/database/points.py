@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from mcp.server import Server
+from mcp.types import Tool
 
 from .client import QdrantDatabaseClient
 
@@ -130,16 +130,14 @@ async def batch_update(
     )
 
 
-def register_point_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
-    """Register point management tools with MCP server.
+def register_point_tools(client: QdrantDatabaseClient, tools_list: list, handlers: dict) -> None:
+    """Register point management tools.
 
     Args:
-        server: MCP server instance
         client: Qdrant database client
         tools_list: List to append tool definitions to
+        handlers: Mapping of tool name -> async handler to populate
     """
-    from mcp.types import Tool
-
     # Define tools
     tools_list.extend([
         Tool(
@@ -230,74 +228,36 @@ def register_point_tools(server: Server, client: QdrantDatabaseClient, tools_lis
         ),
     ])
 
-    @server.call_tool()
     async def qdrant_db_points_upsert(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Upsert (insert or update) points in a collection.
-
-        Args:
-            collection_name: Name of the collection
-            points: List of points with id, vector, and optional payload
-        """
+        """Upsert (insert or update) points in a collection."""
         result = await upsert_points(
             client, arguments["collection_name"], arguments["points"]
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_get(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Retrieve multiple points by their IDs.
-
-        Args:
-            collection_name: Name of the collection
-            ids: List of point IDs to retrieve
-        """
+        """Retrieve multiple points by their IDs."""
         result = await get_points(client, arguments["collection_name"], arguments["ids"])
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_get_single(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Retrieve a single point by ID.
-
-        Args:
-            collection_name: Name of the collection
-            point_id: ID of the point to retrieve
-        """
+        """Retrieve a single point by ID."""
         result = await get_point(client, arguments["collection_name"], arguments["point_id"])
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_delete(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Delete points from a collection.
-
-        Args:
-            collection_name: Name of the collection
-            points: List of point IDs to delete
-        """
+        """Delete points from a collection."""
         result = await delete_points(client, arguments["collection_name"], arguments["points"])
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_count(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Count points in a collection with optional filter.
-
-        Args:
-            collection_name: Name of the collection
-            filter: Optional filter conditions
-        """
+        """Count points in a collection with optional filter."""
         filter_ = arguments.get("filter")
         result = await count_points(client, arguments["collection_name"], filter_)
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_scroll(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Scroll through points in a collection.
-
-        Args:
-            collection_name: Name of the collection
-            limit: Maximum number of points to return (default: 10)
-            offset: Scroll offset (optional)
-            filter: Optional filter conditions
-        """
+        """Scroll through points in a collection."""
         result = await scroll_points(
             client,
             arguments["collection_name"],
@@ -307,18 +267,21 @@ def register_point_tools(server: Server, client: QdrantDatabaseClient, tools_lis
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_batch(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Perform multiple update operations in a single batch request.
-
-        Allows you to combine multiple operations (upsert, delete, set_payload, etc.)
-        into a single atomic request for better performance.
-
-        Args:
-            collection_name: Name of the collection
-            operations: List of operations to perform
-        """
+        """Perform multiple update operations in a single batch request."""
         result = await batch_update(
             client, arguments["collection_name"], arguments["operations"]
         )
         return [{"type": "text", "text": str(result)}]
+
+    handlers.update(
+        {
+            "qdrant_db_points_upsert": qdrant_db_points_upsert,
+            "qdrant_db_points_get": qdrant_db_points_get,
+            "qdrant_db_points_get_single": qdrant_db_points_get_single,
+            "qdrant_db_points_delete": qdrant_db_points_delete,
+            "qdrant_db_points_count": qdrant_db_points_count,
+            "qdrant_db_points_scroll": qdrant_db_points_scroll,
+            "qdrant_db_points_batch": qdrant_db_points_batch,
+        }
+    )
