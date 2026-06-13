@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from mcp.server import Server
+from mcp.types import Tool
 
 from .client import QdrantDatabaseClient
 
@@ -102,16 +102,14 @@ async def recommend_batch_points(
     )
 
 
-def register_search_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
-    """Register vector search tools with MCP server.
+def register_search_tools(client: QdrantDatabaseClient, tools_list: list, handlers: dict) -> None:
+    """Register vector search tools.
 
     Args:
-        server: MCP server instance
         client: Qdrant database client
         tools_list: List to append tool definitions to
+        handlers: Mapping of tool name -> async handler to populate
     """
-    from mcp.types import Tool
-
     # Define tools
     tools_list.extend([
         Tool(
@@ -171,18 +169,8 @@ def register_search_tools(server: Server, client: QdrantDatabaseClient, tools_li
         ),
     ])
 
-    @server.call_tool()
     async def qdrant_db_points_search(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Search for similar vectors in a collection.
-
-        Args:
-            collection_name: Name of the collection
-            vector: Query vector (list of floats)
-            limit: Maximum number of results (default: 10)
-            filter: Optional filter conditions
-            with_payload: Include payload in results (default: true)
-            with_vector: Include vectors in results (default: false)
-        """
+        """Search for similar vectors in a collection."""
         result = await search_points(
             client,
             arguments["collection_name"],
@@ -194,30 +182,15 @@ def register_search_tools(server: Server, client: QdrantDatabaseClient, tools_li
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_search_batch(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Perform multiple search queries in a single request.
-
-        Args:
-            collection_name: Name of the collection
-            searches: List of search queries
-        """
+        """Perform multiple search queries in a single request."""
         result = await search_batch_points(
             client, arguments["collection_name"], arguments["searches"]
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_recommend(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Get recommendations based on positive and negative examples.
-
-        Args:
-            collection_name: Name of the collection
-            positive: List of positive example point IDs
-            negative: List of negative example point IDs (optional)
-            limit: Maximum number of results (default: 10)
-            filter: Optional filter conditions
-        """
+        """Get recommendations based on positive and negative examples."""
         result = await recommend_points(
             client,
             arguments["collection_name"],
@@ -228,15 +201,18 @@ def register_search_tools(server: Server, client: QdrantDatabaseClient, tools_li
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_points_recommend_batch(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Perform multiple recommendation queries in a single request.
-
-        Args:
-            collection_name: Name of the collection
-            searches: List of recommendation queries
-        """
+        """Perform multiple recommendation queries in a single request."""
         result = await recommend_batch_points(
             client, arguments["collection_name"], arguments["searches"]
         )
         return [{"type": "text", "text": str(result)}]
+
+    handlers.update(
+        {
+            "qdrant_db_points_search": qdrant_db_points_search,
+            "qdrant_db_points_search_batch": qdrant_db_points_search_batch,
+            "qdrant_db_points_recommend": qdrant_db_points_recommend,
+            "qdrant_db_points_recommend_batch": qdrant_db_points_recommend_batch,
+        }
+    )

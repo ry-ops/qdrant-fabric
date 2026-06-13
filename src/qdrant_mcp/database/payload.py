@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from mcp.server import Server
+from mcp.types import Tool
 
 from .client import QdrantDatabaseClient
 
@@ -90,16 +90,14 @@ async def clear_payload(
     )
 
 
-def register_payload_tools(server: Server, client: QdrantDatabaseClient, tools_list: list) -> None:
-    """Register payload management tools with MCP server.
+def register_payload_tools(client: QdrantDatabaseClient, tools_list: list, handlers: dict) -> None:
+    """Register payload management tools.
 
     Args:
-        server: MCP server instance
         client: Qdrant database client
         tools_list: List to append tool definitions to
+        handlers: Mapping of tool name -> async handler to populate
     """
-    from mcp.types import Tool
-
     # Define tools
     tools_list.extend([
         Tool(
@@ -155,15 +153,8 @@ def register_payload_tools(server: Server, client: QdrantDatabaseClient, tools_l
         ),
     ])
 
-    @server.call_tool()
     async def qdrant_db_payload_set(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Set payload for specified points (merges with existing payload).
-
-        Args:
-            collection_name: Name of the collection
-            payload: Payload data to set
-            points: List of point IDs to update
-        """
+        """Set payload for specified points (merges with existing payload)."""
         result = await set_payload(
             client,
             arguments["collection_name"],
@@ -172,15 +163,8 @@ def register_payload_tools(server: Server, client: QdrantDatabaseClient, tools_l
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_payload_overwrite(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Overwrite payload for specified points (replaces existing payload).
-
-        Args:
-            collection_name: Name of the collection
-            payload: Payload data to set
-            points: List of point IDs to update
-        """
+        """Overwrite payload for specified points (replaces existing payload)."""
         result = await overwrite_payload(
             client,
             arguments["collection_name"],
@@ -189,15 +173,8 @@ def register_payload_tools(server: Server, client: QdrantDatabaseClient, tools_l
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_payload_delete(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Delete specific payload fields from points.
-
-        Args:
-            collection_name: Name of the collection
-            keys: List of payload keys to delete
-            points: List of point IDs to update
-        """
+        """Delete specific payload fields from points."""
         result = await delete_payload(
             client,
             arguments["collection_name"],
@@ -206,15 +183,18 @@ def register_payload_tools(server: Server, client: QdrantDatabaseClient, tools_l
         )
         return [{"type": "text", "text": str(result)}]
 
-    @server.call_tool()
     async def qdrant_db_payload_clear(arguments: dict[str, Any]) -> list[dict[str, Any]]:
-        """Clear all payload data from specified points.
-
-        Args:
-            collection_name: Name of the collection
-            points: List of point IDs to clear
-        """
+        """Clear all payload data from specified points."""
         result = await clear_payload(
             client, arguments["collection_name"], arguments["points"]
         )
         return [{"type": "text", "text": str(result)}]
+
+    handlers.update(
+        {
+            "qdrant_db_payload_set": qdrant_db_payload_set,
+            "qdrant_db_payload_overwrite": qdrant_db_payload_overwrite,
+            "qdrant_db_payload_delete": qdrant_db_payload_delete,
+            "qdrant_db_payload_clear": qdrant_db_payload_clear,
+        }
+    )
