@@ -200,8 +200,6 @@ qdrant-fabric/
 ## Documentation
 
 - [API Coverage Plan](docs/API_COVERAGE_PLAN.md) - Complete roadmap
-- [Cloud API Surface](docs/cloud_api_surface.txt) - All gRPC methods
-- [Database API Operations](docs/database_api_operations.txt) - All REST endpoints
 
 ## Contributing
 
@@ -216,3 +214,8 @@ MIT License - see LICENSE file for details
 - [Qdrant Documentation](https://qdrant.tech/documentation/)
 - [Qdrant Cloud Console](https://cloud.qdrant.io/)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
+
+<!-- org-footer -->
+---
+
+<p align="center"><sub>Part of <a href="https://github.com/ry-ops">ry-ops</a> · building the pipes between infrastructure, automation, and observability · built by <a href="https://github.com/ry-ops">ry-ops</a></sub></p>
