@@ -31,9 +31,15 @@ This hybrid architecture enables seamless local development while providing full
 
 ## Installation
 
+Not yet published to PyPI — install from source:
+
 ```bash
-pip install qdrant-fabric
+git clone https://github.com/ry-ops/qdrant-fabric
+cd qdrant-fabric
+uv sync          # or: pip install -e .
 ```
+
+You'll also need a running Qdrant (local via `docker run -p 6333:6333 qdrant/qdrant`, or a Qdrant Cloud URL).
 
 ## Quick Start
 
@@ -151,7 +157,7 @@ All 30 Phase 1 database tools are now available:
 
 ### Environment Variables
 
-**Cloud Management API:**
+**Cloud Management API (Phase 2 — not yet wired):**
 - `QDRANT_CLOUD_API_KEY` - Bearer token for Qdrant Cloud API
 - `QDRANT_CLOUD_URL` - Cloud API base URL (default: `https://cloud.qdrant.io`)
 
@@ -166,7 +172,7 @@ All 30 Phase 1 database tools are now available:
 ### Setup
 
 ```bash
-git clone https://github.com/yourusername/qdrant-fabric.git
+git clone https://github.com/ry-ops/qdrant-fabric.git
 cd qdrant-fabric
 pip install -e ".[dev]"
 ```
