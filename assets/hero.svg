@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" role="img" aria-labelledby="t d">
+  <title id="t">Qdrant Fabric: search your data by meaning</title>
+  <desc id="d">You ask for notes about database rollbacks. The server turns the query into a vector, drops it into the collection's vector space, finds the nearest points by meaning, and returns ranked results, including ones that never use the word rollback. A Model Context Protocol server for the Qdrant vector database.</desc>
+  <defs><linearGradient id="title" x1="0" x2="1"><stop offset="0" stop-color="#dc244c"/><stop offset=".5" stop-color="#ff5c8a"/><stop offset="1" stop-color="#b58cff"/></linearGradient></defs>
+  <style>
+    text { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; fill:#e6ebf5; }
+    .muted { fill:#8b96ad; } .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    @keyframes ask { 0%,1.82% { opacity:0; transform:translateY(8px); } 5.00%,94.55% { opacity:1; transform:translateY(0); } 97.27%,100% { opacity:0 } } .ask { animation:ask 11.0s infinite; }
+    @keyframes emb { 0%,14.55% { opacity:0; } 17.73%,94.55% { opacity:1; } 97.27%,100% { opacity:0 } } .emb { animation:emb 11.0s infinite; }
+    @keyframes ans { 0%,67.27% { opacity:0; transform:translateY(6px); } 70.45%,94.55% { opacity:1; transform:translateY(0); } 97.27%,100% { opacity:0 } } .ans { animation:ans 11.0s infinite; }
+    @keyframes n2 { 0%,47.27% { opacity:0; } 50.45%,94.55% { opacity:1; } 97.27%,100% { opacity:0 } } .n2 { animation:n2 11.0s infinite; }
+    @keyframes n0 { 0%,40.00% { opacity:0; } 43.18%,94.55% { opacity:1; } 97.27%,100% { opacity:0 } } .n0 { animation:n0 11.0s infinite; }
+    @keyframes n1 { 0%,43.64% { opacity:0; } 46.82%,94.55% { opacity:1; } 97.27%,100% { opacity:0 } } .n1 { animation:n1 11.0s infinite; }
+    @keyframes qpt { 0%,27.27% { opacity:0; transform:scale(.3); } 30.45%,94.55% { opacity:1; transform:scale(1); } 97.27%,100% { opacity:0 } } .qpt { animation:qpt 11.0s infinite; }
+    @media (prefers-reduced-motion: reduce) { * { animation:none !important; } }
+  </style>
+  <rect width="960" height="420" rx="20" fill="#0f1420"/>
+  <text x="40" y="62" font-size="40" font-weight="800" style="fill:url(#title)">Qdrant Fabric</text>
+  <text x="42" y="92" font-size="16" class="muted">Store and search your data by meaning — the vector database, in one conversation.</text>
+
+  <rect x="30" y="120" width="380" height="270" rx="16" fill="#161d2b" stroke="#2c3750"/>
+  <g class="ask"><rect x="60" y="138" width="320" height="34" rx="12" fill="#2a3550"/><text x="74" y="160" font-size="13.5">Find my notes about DB rollbacks</text></g>
+  <g class="emb"><rect x="46" y="190" width="250" height="26" rx="8" fill="#1d2536" stroke="#dc244c"/><text x="58" y="208" font-size="12.5" class="mono" style="fill:#ff9ab5">qdrant_db_points_search</text></g>
+  <g class="ans"><rect x="46" y="230" width="344" height="146" rx="12" fill="#1d2536"/>
+    <text x="60" y="254" font-size="11" font-weight="700" class="muted" letter-spacing=".08em">RANKED BY MEANING</text>
+    <text x="60" y="278" font-size="13">1 · "reverting a bad migration" <tspan class="muted">0.91</tspan></text>
+    <text x="60" y="300" font-size="13">2 · "restoring from a snapshot" <tspan class="muted">0.88</tspan></text>
+    <text x="60" y="322" font-size="13">3 · "undo a schema change" <tspan class="muted">0.84</tspan></text>
+    <text x="60" y="352" font-size="11.5" class="muted">None say "rollback" — matched on meaning,</text>
+    <text x="60" y="368" font-size="11.5" class="muted">not keywords.</text></g>
+
+  <text x="640" y="132" text-anchor="middle" font-size="11" font-weight="700" class="muted" letter-spacing=".1em">VECTOR SPACE · ONE COLLECTION</text>
+  <ellipse cx="640" cy="250" rx="175" ry="130" fill="#dc244c" fill-opacity=".04" stroke="#2c3750" stroke-dasharray="4 6"/>
+  <circle cx="622" cy="275" r="4" fill="#3a4459"/><circle cx="623" cy="233" r="4" fill="#3a4459"/><circle cx="574" cy="240" r="4" fill="#3a4459"/><circle cx="720" cy="271" r="4" fill="#3a4459"/><circle class="n2" cx="714" cy="262" r="5" fill="#dc244c"/><line class="n2" x1="710" y1="210" x2="714" y2="262" stroke="#dc244c" stroke-width="1.5" stroke-opacity=".5"/><circle cx="669" cy="259" r="4" fill="#3a4459"/><circle cx="527" cy="291" r="4" fill="#3a4459"/><circle cx="675" cy="274" r="4" fill="#3a4459"/><circle cx="540" cy="178" r="4" fill="#3a4459"/><circle cx="577" cy="227" r="4" fill="#3a4459"/><circle cx="666" cy="247" r="4" fill="#3a4459"/><circle class="n0" cx="676" cy="219" r="5" fill="#dc244c"/><line class="n0" x1="710" y1="210" x2="676" y2="219" stroke="#dc244c" stroke-width="1.5" stroke-opacity=".5"/><circle cx="662" cy="269" r="4" fill="#3a4459"/><circle cx="595" cy="332" r="4" fill="#3a4459"/><circle cx="680" cy="311" r="4" fill="#3a4459"/><circle cx="596" cy="213" r="4" fill="#3a4459"/><circle cx="613" cy="244" r="4" fill="#3a4459"/><circle cx="684" cy="262" r="4" fill="#3a4459"/><circle cx="608" cy="202" r="4" fill="#3a4459"/><circle cx="602" cy="312" r="4" fill="#3a4459"/><circle cx="584" cy="262" r="4" fill="#3a4459"/><circle cx="670" cy="175" r="4" fill="#3a4459"/><circle cx="644" cy="316" r="4" fill="#3a4459"/><circle cx="508" cy="235" r="4" fill="#3a4459"/><circle cx="632" cy="210" r="4" fill="#3a4459"/><circle class="n1" cx="675" cy="247" r="5" fill="#dc244c"/><line class="n1" x1="710" y1="210" x2="675" y2="247" stroke="#dc244c" stroke-width="1.5" stroke-opacity=".5"/>
+  <g class="qpt"><circle cx="710" cy="210" r="8" fill="#ffb02e" stroke="#0f1420" stroke-width="2"/><text x="724" y="202" font-size="11" font-weight="700" style="fill:#ffd88a">your query</text></g>
+</svg>

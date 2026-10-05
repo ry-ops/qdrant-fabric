@@ -1,225 +1,104 @@
-<div align="center">
-  <img src="assets/qdrant-fabric-hero.svg" alt="Qdrant Fabric" width="100%"/>
-</div>
-
-# Qdrant Fabric
-
-A comprehensive Model Context Protocol (MCP) server providing access to both Qdrant Cloud Management and Database APIs as part of the Infrastructure as a Fabric ecosystem.
-
-## Features
-
-- **30 Database Tools**: Complete Phase 1 implementation with all core database operations
-- **Full MCP Integration**: Works seamlessly with Claude Desktop and other MCP clients
-- **Type-Safe**: Full Pydantic validation and type hints
-- **Async-First**: Built on modern async Python patterns
-- **Fabric Integration**: Seamlessly integrates with AIANA and n8n-fabric
-- **Comprehensive**: Collections, Points, Search, Payload, Health, Vectors, and Index operations
-
-## Infrastructure Fabric
-
 <p align="center">
-  <img src="assets/qdrant-fabric-flow.svg" alt="qdrant-fabric Data Flow" width="100%">
+  <img src="assets/hero.svg" width="100%" alt="You ask for notes about DB rollbacks; the server embeds the query, finds the nearest points in the collection's vector space, and returns results ranked by meaning rather than keywords.">
 </p>
 
-The qdrant-fabric MCP server sits at the heart of the infrastructure, connecting:
-- **Local Qdrant** (localhost:6333) - Your development instance with collections
-- **Qdrant Cloud** - Managed clusters, backups, and production infrastructure
-- **AIANA** - AI Assistant with semantic memory (`aiana_memories` collection)
-- **n8n-fabric** - Workflow automation with vector indexing (`n8n_workflows` collection)
+<h1 align="center">Qdrant Fabric</h1>
 
-This hybrid architecture enables seamless local development while providing full cloud management capabilities.
+<p align="center"><b>Store and search your data by meaning.</b> A Model Context Protocol server for the <a href="https://qdrant.tech/">Qdrant</a> vector database that gives Claude, or any MCP client, 30 tools for collections, points, semantic search, payloads, vectors and more.</p>
 
-## Installation
+<p align="center">
+  <img src="https://img.shields.io/badge/tools-30-dc244c" alt="30 tools">
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-ff5c8a" alt="Python 3.10+"></a>
+  <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-stdio-b58cff" alt="MCP"></a>
+  <img src="https://img.shields.io/badge/part%20of-Infrastructure%20as%20a%20Fabric-3ec7ff" alt="Infrastructure as a Fabric">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8b96ad" alt="MIT"></a>
+</p>
 
-Not yet published to PyPI — install from source:
+---
+
+## ✨ Why a vector database
+
+Keyword search finds the words you typed. **Vector search finds what you meant.** Qdrant stores each item as a vector (an embedding), so a query for "rollbacks" surfaces "reverting a migration" and "restoring from a snapshot" even when they never use the word. That's what makes it the memory layer for RAG and AI assistants.
+
+This server wraps Qdrant's Database API so you can drive all of it from a conversation.
+
+## 🧰 30 tools, 7 groups
+
+<p align="center">
+  <img src="assets/tools.svg" width="100%" alt="The 30 tools in seven groups: collections (6), points (7), vector search (4), payload (4), health (5), vectors (2), index (2).">
+</p>
+
+| Group | Tools | What for |
+|---|--:|---|
+| **Collections** | 6 | Create, inspect, update and delete collections |
+| **Points** | 7 | Upsert, fetch, delete, count, scroll and batch your vectors + payloads |
+| **Vector search** | 4 | Similarity search and recommendations, single or batched |
+| **Payload** | 4 | Set, overwrite, delete or clear the metadata on points |
+| **Health** | 5 | Version, health, liveness, readiness, Prometheus metrics |
+| **Vectors** | 2 | Update or delete named vectors on existing points |
+| **Index** | 2 | Create or drop payload field indexes for faster filtering |
+
+Every tool is named `qdrant_db_*` and is dispatched through a single handler. They register only when `QDRANT_URL` and `QDRANT_API_KEY` are set.
+
+## 🚀 Setup
+
+You need **Python 3.10+** with [`uv`](https://github.com/astral-sh/uv), and a running Qdrant.
 
 ```bash
+# a local Qdrant (or use a Qdrant Cloud URL)
+docker run -d -p 6333:6333 -v ~/qdrant_storage:/qdrant/storage qdrant/qdrant
+
+# the server (not published to PyPI — install from source)
 git clone https://github.com/ry-ops/qdrant-fabric
 cd qdrant-fabric
 uv sync          # or: pip install -e .
 ```
 
-You'll also need a running Qdrant (local via `docker run -p 6333:6333 qdrant/qdrant`, or a Qdrant Cloud URL).
-
-## Quick Start
-
-### Configure Claude Desktop
-
-Add to your Claude Desktop config (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`):
+**Connect Claude Desktop** — add to `claude_desktop_config.json` (`~/Library/Application Support/Claude/` on macOS, `%APPDATA%\Claude\` on Windows):
 
 ```json
 {
   "mcpServers": {
     "qdrant-fabric": {
       "command": "uv",
-      "args": [
-        "run",
-        "--directory",
-        "/path/to/qdrant-fabric",
-        "python",
-        "-m",
-        "qdrant_mcp"
-      ],
+      "args": ["run", "--directory", "/absolute/path/to/qdrant-fabric", "python", "-m", "qdrant_mcp"],
       "env": {
-        "QDRANT_API_KEY": "your-database-api-key",
-        "QDRANT_URL": "http://localhost:6333"
+        "QDRANT_URL": "http://localhost:6333",
+        "QDRANT_API_KEY": "your-database-api-key"
       }
     }
   }
 }
 ```
 
-Or use Python directly:
+| Variable | Needed | What for |
+|---|:---:|---|
+| `QDRANT_URL` | ✅ | Qdrant endpoint, e.g. `http://localhost:6333` or a Cloud URL |
+| `QDRANT_API_KEY` | for secured instances | Database API key (optional for an open local instance) |
+| `QDRANT_CLOUD_API_KEY`, `QDRANT_CLOUD_URL` | — | Reserved for Phase 2 cloud management; not yet wired |
 
-```json
-{
-  "mcpServers": {
-    "qdrant-fabric": {
-      "command": "python",
-      "args": ["-m", "qdrant_mcp"],
-      "env": {
-        "QDRANT_API_KEY": "your-database-api-key",
-        "QDRANT_URL": "http://localhost:6333"
-      }
-    }
-  }
-}
-```
+Quit and reopen Claude Desktop to load the server.
 
-### Available Tools (v0.0.4)
+## 🗺️ Roadmap
 
-All 30 Phase 1 database tools are now available:
+Phase 1 — the 30 database tools above — is **complete (v0.0.4)**. Later phases (cloud management, advanced discovery, backup and recovery) are mapped out in [docs/API_COVERAGE_PLAN.md](docs/API_COVERAGE_PLAN.md). The `cloud/` module is a placeholder until then.
 
-**Collections Management (6 tools)**
-- `qdrant_db_collections_list` - List all collections
-- `qdrant_db_collections_get` - Get collection details
-- `qdrant_db_collections_create` - Create new collection
-- `qdrant_db_collections_delete` - Delete collection
-- `qdrant_db_collections_update` - Update collection configuration
-- `qdrant_db_collections_exists` - Check if collection exists
+## 🧵 Part of the fabric
 
-**Points Operations (7 tools)**
-- `qdrant_db_points_upsert` - Insert or update points
-- `qdrant_db_points_get` - Retrieve multiple points by ID
-- `qdrant_db_points_get_single` - Get single point by ID
-- `qdrant_db_points_delete` - Delete points
-- `qdrant_db_points_count` - Count points with optional filter
-- `qdrant_db_points_scroll` - Scroll through points
-- `qdrant_db_points_batch` - Batch point operations
+Qdrant Fabric is the vector layer of the **Infrastructure as a Fabric** ecosystem: it backs [aiana](https://github.com/ry-ops/aiana)'s semantic memory and [n8n-fabric](https://github.com/ry-ops/n8n-fabric)'s workflow indexing, across a local instance for development and Qdrant Cloud for production.
 
-**Vector Search (4 tools)**
-- `qdrant_db_points_search` - Vector similarity search
-- `qdrant_db_points_search_batch` - Batch search queries
-- `qdrant_db_points_recommend` - Recommendation based on examples
-- `qdrant_db_points_recommend_batch` - Batch recommendations
-
-**Payload Management (4 tools)**
-- `qdrant_db_payload_set` - Set payload (merge with existing)
-- `qdrant_db_payload_overwrite` - Overwrite payload (replace)
-- `qdrant_db_payload_delete` - Delete specific payload fields
-- `qdrant_db_payload_clear` - Clear all payload
-
-**Health Checks (5 tools)**
-- `qdrant_db_health_root` - Version and build information
-- `qdrant_db_health_check` - Health check
-- `qdrant_db_health_liveness` - Liveness probe
-- `qdrant_db_health_readiness` - Readiness probe
-- `qdrant_db_health_metrics` - Prometheus metrics
-
-**Vector Operations (2 tools)**
-- `qdrant_db_vectors_update` - Update vectors for existing points
-- `qdrant_db_vectors_delete` - Delete named vectors
-
-**Index Management (2 tools)**
-- `qdrant_db_index_create` - Create field index for faster filtering
-- `qdrant_db_index_delete` - Delete field index
-
-## API Coverage
-
-### Phase 1: Core Database Operations ✅ Complete (v0.0.4)
-- ✅ Collections Management (6 tools)
-- ✅ Points Operations (7 tools)
-- ✅ Vector Search (4 tools)
-- ✅ Payload Management (4 tools)
-- ✅ Health Checks (5 tools)
-- ✅ Vector Operations (2 tools)
-- ✅ Index Management (2 tools)
-
-**Total: 30 tools**
-
-### Coming Soon
-- Phase 2: Cloud Management Essentials
-- Phase 3: Advanced Search & Discovery
-- Phase 4: Backup & Recovery
-- See [API_COVERAGE_PLAN.md](docs/API_COVERAGE_PLAN.md) for full roadmap
-
-## Configuration
-
-### Environment Variables
-
-**Cloud Management API (Phase 2 — not yet wired):**
-- `QDRANT_CLOUD_API_KEY` - Bearer token for Qdrant Cloud API
-- `QDRANT_CLOUD_URL` - Cloud API base URL (default: `https://cloud.qdrant.io`)
-
-**Database API:**
-- `QDRANT_API_KEY` - API key for database access (optional for local instances)
-- `QDRANT_URL` - Database URL (e.g., `http://localhost:6333` or `https://xyz.qdrant.io`)
-
-**Note:** Cloud Management API tools are coming in Phase 2. Currently, only Database API tools are available.
-
-## Development
-
-### Setup
+## 🛠️ Development
 
 ```bash
-git clone https://github.com/ry-ops/qdrant-fabric.git
-cd qdrant-fabric
-pip install -e ".[dev]"
+uv sync
+python -m qdrant_mcp        # run the server (needs QDRANT_URL/API_KEY)
+pytest                      # tests
+black src/ tests/ && ruff check src/ tests/ && mypy src/
 ```
-
-### Run Tests
-
-```bash
-pytest
-```
-
-### Code Quality
-
-```bash
-black src/ tests/
-ruff check src/ tests/
-mypy src/
-```
-
-## Architecture
-
-```
-qdrant-fabric/
-├── src/qdrant_mcp/
-│   ├── server.py          # MCP server entrypoint
-│   ├── config.py          # Configuration management
-│   ├── cloud/             # Cloud Management API tools
-│   └── database/          # Database API tools
-└── tests/                 # Test suite
-```
-
-## Documentation
-
-- [API Coverage Plan](docs/API_COVERAGE_PLAN.md) - Complete roadmap
-
-## Contributing
-
-Contributions welcome! Please read our contributing guidelines and submit PRs.
 
 ## License
 
-MIT License - see LICENSE file for details
-
-## Links
-
-- [Qdrant Documentation](https://qdrant.tech/documentation/)
-- [Qdrant Cloud Console](https://cloud.qdrant.io/)
-- [Model Context Protocol](https://modelcontextprotocol.io/)
+MIT. See [LICENSE](LICENSE).
 
 <!-- org-footer -->
 ---
